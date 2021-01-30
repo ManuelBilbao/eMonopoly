@@ -31,8 +31,9 @@ public class AgregarUsuarios extends AppCompatActivity {
 	private ArrayList<String> tarjetas = new ArrayList<>();
 
 	private TableLayout tableLayout;
-	private Jugador jugadorActual = null;
 	private AlertDialog alertDialog;
+	private boolean dialogCancelled;
+	private Jugador jugadorActual = null;
 	private Context context;
 
 	@Override
@@ -119,21 +120,40 @@ public class AgregarUsuarios extends AppCompatActivity {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle(jugador.getNombre());
 		alertDialogBuilder.setMessage("");
+		alertDialogBuilder.setCancelable(false);
 		alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
+		alertDialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				jugadores.clear();
+				tarjetas.clear();
+				dialogCancelled = true;
+			}
+		});
 		alertDialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				NFCUtilities.disableDiscovering(context);
+				if (dialogCancelled) {
+					dialogCancelled = false;
+					return;
+				}
 				pedirSiguienteTarjeta(indice + 1);
 			}
 		});
 
 		alertDialog = alertDialogBuilder.create();
+		alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialog) {
+				((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false); // Disable 'okay' button until a new card is read
+			}
+		});
 		NFCUtilities.enableDiscovering(context);
 		jugadorActual = jugador;
 		alertDialog.show();
@@ -204,6 +224,7 @@ public class AgregarUsuarios extends AppCompatActivity {
 				jugadorActual.setCardUID(uid);
 				tarjetas.add(uid);
 				alertDialog.setMessage(uid);
+				alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 			}
 		}
 	}
