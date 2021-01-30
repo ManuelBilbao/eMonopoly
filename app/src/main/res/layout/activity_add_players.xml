@@ -4,7 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".AgregarUsuarios">
+	tools:context=".AddPlayers">
 
 	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
@@ -12,7 +12,7 @@
 		android:theme="@style/Theme.EMonopoly.AppBarOverlay">
 
 		<androidx.appcompat.widget.Toolbar
-			android:id="@+id/toolbar"
+			android:id="@+id/add_players_toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
 			android:background="?attr/colorPrimary"
@@ -20,9 +20,9 @@
 
 	</com.google.android.material.appbar.AppBarLayout>
 
-	<include
+	<!--<include
 		layout="@layout/content_agregar_usuarios"
-		android:visibility="gone" />
+		android:visibility="gone" />-->
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
@@ -31,7 +31,7 @@
 		app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 		<TableLayout
-			android:id="@+id/agregarUsuariosTableLayout"
+			android:id="@+id/add_players_table_layout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			app:layout_constraintTop_toTopOf="parent"
@@ -41,22 +41,23 @@
 		</TableLayout>
 
 		<Button
-			android:id="@+id/agregarUsuariosBtnEmpezar"
+			android:id="@+id/add_players_btn_start"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Empezar"
+			android:text="@string/add_players_button_start"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/agregarUsuariosTableLayout" />
+			app:layout_constraintTop_toBottomOf="@id/add_players_table_layout" />
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
-		android:id="@+id/fab"
+		android:id="@+id/add_players_fab"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom|end"
 		android:layout_margin="@dimen/fab_margin"
-		app:srcCompat="@android:drawable/ic_menu_add" />
+		app:srcCompat="@android:drawable/ic_menu_add"
+		android:contentDescription="@string/add_players_fab_description" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

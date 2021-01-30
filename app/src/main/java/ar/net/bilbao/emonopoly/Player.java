@@ -1,21 +1,21 @@
 package ar.net.bilbao.emonopoly;
 
-public class Jugador {
+public class Player {
     private static int lastIndex = 0;
 
     private int index;
     private String cardUID;
     private int color;
-    private String nombre;
-    private int plata;
-    private boolean perdio;
+    private String name;
+    private int money;
+    private boolean hasLost;
 
-    public Jugador(int color, String nombre, int plata) {
+    public Player(int color, String name, int money) {
         this.index = lastIndex++;
         this.color = color;
-        this.nombre = nombre;
-        this.plata = plata;
-        this.perdio = false;
+        this.name = name;
+        this.money = money;
+        this.hasLost = false;
     }
 
     public int getIndex() {
@@ -26,24 +26,24 @@ public class Jugador {
         return color;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public int getPlata() {
-        return plata;
+    public int getMoney() {
+        return money;
     }
 
-    public void setPlata(int plata) {
-        this.plata = plata;
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     public boolean perdio() {
-        return perdio;
+        return hasLost;
     }
 
-    public void setPerdio(boolean perdio) {
-        this.perdio = perdio;
+    public void setHasLost(boolean hasLost) {
+        this.hasLost = hasLost;
     }
 
     public String getCardUID() {

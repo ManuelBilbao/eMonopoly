@@ -17,12 +17,15 @@
         android:layout_weight="1"
         android:ems="10"
         android:inputType="textCapWords"
-        android:text="Nombre" />
+        android:text=""
+        android:autofillHints="personName"
+        android:hint="@string/add_players_default_name"/>
 
     <ImageButton
         style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/ic_delete"
-        android:onClick="removePlayer"/>
+        android:onClick="removePlayer"
+        android:contentDescription="@string/add_players_remove_player" />
 </TableRow>

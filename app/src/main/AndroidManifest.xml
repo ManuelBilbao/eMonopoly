@@ -12,7 +12,7 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.EMonopoly">
 		<activity
-			android:name=".AgregarUsuarios"
+			android:name=".AddPlayers"
 			android:label="@string/title_activity_agregar_usuarios"
 			android:theme="@style/Theme.EMonopoly.NoActionBar">
 			<intent-filter>

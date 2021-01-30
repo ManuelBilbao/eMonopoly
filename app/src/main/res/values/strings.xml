@@ -6,8 +6,18 @@
 	<string name="second_fragment_label">Second Fragment</string>
 	<string name="next">Next</string>
 	<string name="previous">Previous</string>
+	<string name="okay">OK</string>
+	<string name="cancel">Cancel</string>
 
 	<string name="hello_first_fragment">Hello first fragment</string>
 	<string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 	<string name="title_activity_agregar_usuarios">eMonopoly</string>
+
+	<!-- AddPlayers activity -->
+	<string name="add_players_button_start">Start</string>
+	<string name="add_players_fab_description">Add new player</string>
+	<string name="add_players_alert_dialog_card_repeated">That card already belongs to %s!</string>
+	<string name="add_players_default_name">Name</string>
+	<string name="add_players_remove_player">Remove player</string>
+	<!-- /AddPlayers activity -->
 </resources>
