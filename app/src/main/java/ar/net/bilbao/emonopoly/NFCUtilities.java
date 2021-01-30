@@ -61,6 +61,11 @@ public class NFCUtilities {
 		nfcAdapter.disableForegroundDispatch((Activity) context);
 	}
 
+	public static boolean isEnabled(Context context) {
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(context);
+		return nfcAdapter.isEnabled();
+	}
+
 	public static String newIntent(Intent intent) {
 		if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
 			String id = byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));

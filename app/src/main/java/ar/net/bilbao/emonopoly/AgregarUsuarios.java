@@ -1,11 +1,11 @@
 package ar.net.bilbao.emonopoly;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,9 +28,12 @@ public class AgregarUsuarios extends AppCompatActivity {
 
 	private ArrayList<Integer> colores = new ArrayList<>();
 	private ArrayList<Jugador> jugadores = new ArrayList<>();
+	private ArrayList<String> tarjetas = new ArrayList<>();
 
 	private TableLayout tableLayout;
 	private Jugador jugadorActual = null;
+	private AlertDialog alertDialog;
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,8 @@ public class AgregarUsuarios extends AppCompatActivity {
 				pedirTarjetas();
 			}
 		});
+
+		context = this;
 	}
 
 	public void colorClick(View view) {
@@ -93,7 +98,6 @@ public class AgregarUsuarios extends AppCompatActivity {
 		row.getChildAt(1).requestFocus();
 		InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
 	}
 
 	public void removePlayer(View view) {
@@ -104,46 +108,103 @@ public class AgregarUsuarios extends AppCompatActivity {
 		colores.remove(index);
 	}
 
+	private void pedirSiguienteTarjeta(int indice) {
+		if (indice >= tableLayout.getChildCount()) return;
+
+		TableRow row = (TableRow) tableLayout.getChildAt(indice);
+
+		Jugador jugador = new Jugador(colores.get(indice), ((EditText) row.getChildAt(1)).getText().toString(), 1500);
+		jugadores.add(jugador);
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle(jugador.getNombre());
+		alertDialogBuilder.setMessage("");
+		alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alertDialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				NFCUtilities.disableDiscovering(context);
+				pedirSiguienteTarjeta(indice + 1);
+			}
+		});
+
+		alertDialog = alertDialogBuilder.create();
+		NFCUtilities.enableDiscovering(context);
+		jugadorActual = jugador;
+		alertDialog.show();
+	}
+
 	private void pedirTarjetas() {
-		for (int i = 0; i < tableLayout.getChildCount(); i++) {
+		pedirSiguienteTarjeta(0);
+	}
+
+	/*private void pedirTarjetas() {
+//		NFCUtilities.enableDiscovering(this);
+		for (int i = tableLayout.getChildCount() - 1; i >= 0; i--) {
 			TableRow row = (TableRow) tableLayout.getChildAt(i);
 
 			Jugador jugador = new Jugador(colores.get(i), ((EditText) row.getChildAt(1)).getText().toString(), 1500);
 			jugadores.add(jugador);
 
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View view = inflater.inflate(R.layout.register_card, null);
-			((TextView) view.findViewById(R.id.registerCardText)).setText("Inserte tarjeta para\n" + jugador.getNombre());
+			View alertView = inflater.inflate(R.layout.register_card, null);
+			((TextView) alertView.findViewById(R.id.registerCardText)).setText("Inserte tarjeta para\n" + jugador.getNombre());
 
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-			alertDialogBuilder.setView(view);
+//			alertDialogBuilder.setView(alertView);
+			alertDialogBuilder.setMessage(jugador.getNombre());
+//			alertDialogBuilder.setCancelable(false);
 
-			jugadorActual = jugador;
-			NFCUtilities.enableDiscovering(this);
-			/* Wait for card */
+			Log.d("1. " + jugador.getNombre(), NFCUtilities.isEnabled(alertView.getContext()) ? "True" : "False");
+			NFCUtilities.enableDiscovering(alertView.getContext());
+			Log.d("1.5." + jugador.getNombre(), NFCUtilities.isEnabled(alertView.getContext()) ? "True" : "False");
 
-			/*alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+			Wait for card
+
+			int finalI = i;
+			alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
+
+					if (finalI == 0) {
+						NFCUtilities.disableDiscovering(alertView.getContext());
+					}
 				}
 			});
-			alertDialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});*/
-			alertDialogBuilder.create().show();
-		}
 
-	}
+			alertDialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+				@Override
+				public void onDismiss(DialogInterface dialog) {
+					if (finalI == 0) {
+						NFCUtilities.disableDiscovering(alertView.getContext());
+					}
+				}
+			});
+			alertDialog = alertDialogBuilder.create();
+			alertDialog.show();
+
+		}
+		Log.d("3.", NFCUtilities.isEnabled(alertDialog.getContext()) ? "True" : "False");
+//		NFCUtilities.disableDiscovering(this);
+	}*/
 
 	@Override
 	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
 		String uid = NFCUtilities.newIntent(intent);
-		if (!uid.equals("") && jugadorActual != null) {
-			jugadorActual.setCardUID(uid);
+		if (!uid.equals("") && alertDialog != null) {
+			if (tarjetas.contains(uid)) {
+				alertDialog.setMessage("Esa tarjeta ya es de " + jugadores.get(tarjetas.indexOf(uid)).getNombre());
+			} else {
+				jugadorActual.setCardUID(uid);
+				tarjetas.add(uid);
+				alertDialog.setMessage(uid);
+			}
 		}
 	}
 }
