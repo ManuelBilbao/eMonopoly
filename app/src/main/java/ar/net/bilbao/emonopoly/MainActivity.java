@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
 		String id = newIntent(intent);
 		if (!id.equals("")) {
 			tarjetaDetectada(id);
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_settings) {
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
 			return true;
 		}
 

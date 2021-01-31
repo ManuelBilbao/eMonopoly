@@ -9,4 +9,11 @@
 	<string name="cancel">Cancelar</string>
 	<string name="add_players_default_name">Nombre</string>
 	<string name="add_players_remove_player">Eliminar jugador</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="settings_default_pass_go_money">Premio de Salida por defecto ($)</string>
+	<string name="settings_default_start_money">Dinero inicial por defecto ($)</string>
+	<string name="settings_allow_negative">Permitir saldo negativo</string>
+	<string name="settings_money_header">Dinero</string>
+    <string name="settings_restore_defaults">Restablecer valores predeterminados</string>
+	<string name="settings_values_restored">Valores predeterminados restablecidos</string>
 </resources>
