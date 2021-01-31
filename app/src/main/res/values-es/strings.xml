@@ -2,8 +2,8 @@
 <resources>
 	<string name="app_name">eMonopoly</string>
 	<string name="action_settings">Ajustes</string>
-	<string name="add_players_button_start">Empezar</string>
-	<string name="add_players_fab_description">Agregar nuevo jugador</string>
+	<string name="add_players_button_add_player">Agregar jugador</string>
+	<string name="add_players_fab_description">Empezar juego</string>
 	<string name="add_players_alert_dialog_card_repeated">¡Esa tarjeta ya pertenece a %s!</string>
 	<string name="okay">Aceptar</string>
 	<string name="cancel">Cancelar</string>

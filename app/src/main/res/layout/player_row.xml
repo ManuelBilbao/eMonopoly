@@ -18,8 +18,8 @@
         android:ems="10"
         android:inputType="textCapWords"
         android:text=""
-        android:autofillHints="personName"
-        android:hint="@string/add_players_default_name"/>
+        android:hint="@string/add_players_default_name"
+        android:importantForAutofill="no" />
 
     <ImageButton
         style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"

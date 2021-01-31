@@ -14,8 +14,8 @@
 	<string name="title_activity_agregar_usuarios">eMonopoly</string>
 
 	<!-- AddPlayers activity -->
-	<string name="add_players_button_start">Start</string>
-	<string name="add_players_fab_description">Add new player</string>
+	<string name="add_players_button_add_player">Add player</string>
+	<string name="add_players_fab_description">Start game</string>
 	<string name="add_players_alert_dialog_card_repeated">That card already belongs to %s!</string>
 	<string name="add_players_default_name">Name</string>
 	<string name="add_players_remove_player">Remove player</string>

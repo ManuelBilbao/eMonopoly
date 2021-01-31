@@ -45,21 +45,26 @@ public class AddPlayers extends AppCompatActivity {
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				addPlayer();
-			}
-		});
-
-		tableLayout = findViewById(R.id.add_players_table_layout);
-		(findViewById(R.id.add_players_btn_start)).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
 				askForCards();
 			}
 		});
 
-		context = this;
+		tableLayout = findViewById(R.id.add_players_table_layout);
+		(findViewById(R.id.add_players_btn_add_player)).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addPlayer();
+			}
+		});
+
+		context = this; // For NFC reading while AlertDialog is on top
 	}
 
+	/**
+	 * Open a ColorPickerPopup when the color button is clicked and set the new color
+	 *
+	 * @param view View (color button) that calls the function
+	 */
 	public void colorClick(View view) {
 		TableRow row = (TableRow) view.getParent();
 		int index = tableLayout.indexOfChild(row);
@@ -78,29 +83,30 @@ public class AddPlayers extends AppCompatActivity {
 				});
 	}
 
+	/**
+	 * Add new player to the list
+	 */
 	private void addPlayer() {
+		// Create a new row with 'player_row' layout
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		TableRow row = (TableRow) inflater.inflate(R.layout.player_row, null);
 		row.getChildAt(0).setBackgroundColor(Color.RED);
-		row.getChildAt(1).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus) {
-					InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0); // Hide keyboard on Name EditText focus lost
-				}
-			}
-		});
 
 		tableLayout.addView(row);
 		colors.add(Color.RED);
 
+		// Give focus to Name EditText and open the keyboard
 		((EditText) row.getChildAt(1)).selectAll();
 		row.getChildAt(1).requestFocus();
 		InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 	}
 
+	/**
+	 * Remove a player from the list
+	 *
+	 * @param view View (remove button) that calls the function
+	 */
 	public void removePlayer(View view) {
 		TableRow row = (TableRow) view.getParent();
 		int index = tableLayout.indexOfChild(row);
@@ -109,8 +115,14 @@ public class AddPlayers extends AppCompatActivity {
 		colors.remove(index);
 	}
 
-	private void askForNextCard(int index) {
-		if (index >= tableLayout.getChildCount()) return;
+	/**
+	 * Create a Player instance, register his card and add him to 'players' Array.
+	 *
+	 * @param index The index of the player to ask for the card
+	 * @return		The player if created
+	 */
+	private Player askForNextCard(int index) {
+		if (index >= tableLayout.getChildCount()) return null;
 
 		TableRow row = (TableRow) tableLayout.getChildAt(index);
 
@@ -157,8 +169,13 @@ public class AddPlayers extends AppCompatActivity {
 		NFCUtilities.enableDiscovering(context);
 		currentPlayer = player;
 		alertDialog.show();
+
+		return player;
 	}
 
+	/**
+	 * Ask for all the players cards
+	 */
 	private void askForCards() {
 		askForNextCard(0);
 	}
@@ -174,7 +191,7 @@ public class AddPlayers extends AppCompatActivity {
 				currentPlayer.setCardUID(uid);
 				cards.add(uid);
 				alertDialog.setMessage(uid);
-				alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+				alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true); // Enable 'okay' button to continue
 			}
 		}
 	}

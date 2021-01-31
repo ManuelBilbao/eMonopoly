@@ -41,10 +41,10 @@
 		</TableLayout>
 
 		<Button
-			android:id="@+id/add_players_btn_start"
+			android:id="@+id/add_players_btn_add_player"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/add_players_button_start"
+			android:text="@string/add_players_button_add_player"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/add_players_table_layout" />
@@ -57,7 +57,8 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom|end"
 		android:layout_margin="@dimen/fab_margin"
-		app:srcCompat="@android:drawable/ic_menu_add"
-		android:contentDescription="@string/add_players_fab_description" />
+		android:contentDescription="@string/add_players_fab_description"
+		app:srcCompat="?attr/actionModeCloseDrawable"
+		android:rotation="180"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
