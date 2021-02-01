@@ -26,7 +26,7 @@
         <activity
             android:name=".AddPlayers"
             android:label="@string/title_activity_agregar_usuarios"
-            android:theme="@style/Theme.EMonopoly.NoActionBar">
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 

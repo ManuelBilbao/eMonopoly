@@ -38,8 +38,9 @@ public class AddPlayers extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_players);
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
+//		Toolbar toolbar = findViewById(R.id.toolbar);
+//		setSupportActionBar(toolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		tableLayout = findViewById(R.id.add_players_table_layout);
 

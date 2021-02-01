@@ -68,13 +68,8 @@ public class NFCUtilities {
 
 	public static String newIntent(Intent intent) {
 		if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-			String id = byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
-			return id;
+			return byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
 		}
 		return "";
-	}
-
-	public interface TagDetectedCallback {
-		public void make(String id);
 	}
 }
