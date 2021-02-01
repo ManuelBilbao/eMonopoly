@@ -16,4 +16,7 @@
 	<string name="settings_money_header">Dinero</string>
     <string name="settings_restore_defaults">Restablecer valores predeterminados</string>
 	<string name="settings_values_restored">Valores predeterminados restablecidos</string>
+	<string name="main_start">Empezar</string>
+    <string name="add_players_initial_money">Dinero inicial</string>
+	<string name="add_players_pass_go">Bonificación de Salida</string>
 </resources>

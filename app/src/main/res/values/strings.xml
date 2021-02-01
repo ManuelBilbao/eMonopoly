@@ -39,5 +39,8 @@
 	<string name="settings_allow_negative">Allow negative balance</string>
 	<string name="settings_restore_defaults">Restore default values</string>
 	<string name="settings_values_restored">Default values restored</string>
+	<string name="main_start">Start</string>
+    <string name="add_players_initial_money">Initial money</string>
+	<string name="add_players_pass_go">Pass Go reward</string>
 	<!-- /AddPlayers activity -->
 </resources>

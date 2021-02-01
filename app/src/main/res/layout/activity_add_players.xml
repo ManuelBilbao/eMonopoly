@@ -30,24 +30,68 @@
 		android:padding="10dp"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-		<TableLayout
-			android:id="@+id/add_players_table_layout"
+		<LinearLayout
+			android:id="@+id/add_players_linear_layout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:orientation="horizontal"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent">
 
-		</TableLayout>
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="0.5"
+				android:layout_marginEnd="10dp">
 
-		<Button
-			android:id="@+id/add_players_btn_add_player"
-			android:layout_width="wrap_content"
+				<EditText
+					android:id="@+id/add_players_et_money"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/add_players_initial_money"
+					android:inputType="number"
+					android:importantForAutofill="no" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="0.5"
+				android:layout_marginEnd="10dp">
+
+				<EditText
+					android:id="@+id/add_players_et_pass_go"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/add_players_pass_go"
+					android:inputType="number"
+					android:importantForAutofill="no" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<ImageButton
+				android:id="@+id/imageButton"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				app:srcCompat="@android:drawable/ic_menu_add"
+				android:onClick="addPlayer"
+				android:contentDescription="@string/add_players_button_add_player" />
+
+
+		</LinearLayout>
+
+		<TableLayout
+			android:id="@+id/add_players_table_layout"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/add_players_button_add_player"
+			app:layout_constraintTop_toBottomOf="@id/add_players_linear_layout"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@id/add_players_table_layout" />
+			android:layout_marginTop="15dp">
+
+		</TableLayout>
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,6 +103,7 @@
 		android:layout_margin="@dimen/fab_margin"
 		android:contentDescription="@string/add_players_fab_description"
 		app:srcCompat="?attr/actionModeCloseDrawable"
-		android:rotation="180"/>
+		android:rotation="180"
+		android:onClick="askForCards"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

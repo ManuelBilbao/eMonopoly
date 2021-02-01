@@ -3,6 +3,7 @@ package ar.net.bilbao.emonopoly;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,8 +16,7 @@ import android.widget.TableRow;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.preference.PreferenceManager;
 
 import java.util.ArrayList;
 
@@ -41,21 +41,13 @@ public class AddPlayers extends AppCompatActivity {
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		FloatingActionButton fab = findViewById(R.id.add_players_fab);
-		fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				askForCards();
-			}
-		});
-
 		tableLayout = findViewById(R.id.add_players_table_layout);
-		(findViewById(R.id.add_players_btn_add_player)).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				addPlayer();
-			}
-		});
+
+		EditText etMoney = findViewById(R.id.add_players_et_money);
+		EditText etPassGo = findViewById(R.id.add_players_et_pass_go);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		etMoney.setText(sharedPreferences.getString("start_money", ""));
+		etPassGo.setText(sharedPreferences.getString("pass_go_money", ""));
 
 		context = this; // For NFC reading while AlertDialog is on top
 	}
@@ -86,7 +78,7 @@ public class AddPlayers extends AppCompatActivity {
 	/**
 	 * Add new player to the list
 	 */
-	private void addPlayer() {
+	public void addPlayer(View view) {
 		// Create a new row with 'player_row' layout
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		TableRow row = (TableRow) inflater.inflate(R.layout.player_row, null);
@@ -176,7 +168,7 @@ public class AddPlayers extends AppCompatActivity {
 	/**
 	 * Ask for all the players cards
 	 */
-	private void askForCards() {
+	public void askForCards(View view) {
 		askForNextCard(0);
 	}
 

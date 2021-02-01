@@ -14,16 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static ar.net.bilbao.emonopoly.NFCUtilities.disableDiscovering;
-import static ar.net.bilbao.emonopoly.NFCUtilities.enableDiscovering;
-import static ar.net.bilbao.emonopoly.NFCUtilities.newIntent;
-
 public class MainActivity extends AppCompatActivity {
-
-	private List<String> ids = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,40 +30,6 @@ public class MainActivity extends AppCompatActivity {
 				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).show();
 			}
 		});
-	}
-
-	@Override
-	protected void onPostResume() {
-		super.onPostResume();
-		enableDiscovering(this);
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		disableDiscovering(this);
-	}
-
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		String id = newIntent(intent);
-		if (!id.equals("")) {
-			tarjetaDetectada(id);
-		}
-	}
-
-	private void tarjetaDetectada(String id) {
-		if (ids.contains(id))
-			ids.remove(id);
-		else
-			ids.add(id);
-
-		StringBuilder string = new StringBuilder();
-		for (String m : ids) {
-			string.append("\n").append(m);
-		}
-		((TextView) findViewById(R.id.textview_first)).setText("NFC TAGs\n" + string.toString().trim());
 	}
 
 	@Override
@@ -97,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void btnStartClick(View view) {
+		Intent intent = new Intent(this, AddPlayers.class);
+		startActivity(intent);
 	}
 
 	public void handleClick(View view) {
