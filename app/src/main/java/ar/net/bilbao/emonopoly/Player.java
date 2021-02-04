@@ -1,6 +1,8 @@
 package ar.net.bilbao.emonopoly;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private static int lastIndex = 0;
 
     private int index;
@@ -38,7 +40,18 @@ public class Player {
         this.money = money;
     }
 
-    public boolean perdio() {
+    public void giveMoney(int amount) {
+        this.money += amount;
+    }
+
+    public boolean takeMoney(int amount) {
+        if (this.money - amount < 0) return false;
+
+        this.money -= amount;
+        return true;
+    }
+
+    public boolean hasLost() {
         return hasLost;
     }
 

@@ -19,4 +19,6 @@
 	<string name="main_start">Empezar</string>
     <string name="add_players_initial_money">Dinero inicial</string>
 	<string name="add_players_pass_go">Bonificación de Salida</string>
+	<string name="add_players_few_players">No hay suficientes jugadores</string>
+	<string name="add_players_empty_names">Los jugadores tienen que tener nombre</string>
 </resources>

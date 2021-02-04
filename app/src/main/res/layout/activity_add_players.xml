@@ -104,6 +104,6 @@
 		android:contentDescription="@string/add_players_fab_description"
 		app:srcCompat="?attr/actionModeCloseDrawable"
 		android:rotation="180"
-		android:onClick="askForCards"/>
+		android:onClick="clickStart"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

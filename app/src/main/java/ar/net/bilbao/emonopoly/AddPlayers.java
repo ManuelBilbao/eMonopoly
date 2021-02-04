@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,10 +14,12 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,9 @@ public class AddPlayers extends AppCompatActivity {
 	private ArrayList<String> cards = new ArrayList<>();
 
 	private TableLayout tableLayout;
+	private EditText etMoney;
+	private EditText etPassGo;
+
 	private AlertDialog alertDialog;
 	private boolean dialogCancelled;
 	private Player currentPlayer = null;
@@ -38,15 +44,16 @@ public class AddPlayers extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_players);
-//		Toolbar toolbar = findViewById(R.id.toolbar);
-//		setSupportActionBar(toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null)
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		tableLayout = findViewById(R.id.add_players_table_layout);
 
-		EditText etMoney = findViewById(R.id.add_players_et_money);
-		EditText etPassGo = findViewById(R.id.add_players_et_pass_go);
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		etMoney = findViewById(R.id.add_players_et_money);
+		etPassGo = findViewById(R.id.add_players_et_pass_go);
 		etMoney.setText(sharedPreferences.getString("start_money", ""));
 		etPassGo.setText(sharedPreferences.getString("pass_go_money", ""));
 
@@ -85,6 +92,21 @@ public class AddPlayers extends AppCompatActivity {
 		TableRow row = (TableRow) inflater.inflate(R.layout.player_row, null);
 		row.getChildAt(0).setBackgroundColor(Color.RED);
 
+		row.getChildAt(1).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) return;
+				EditText et = (EditText) v;
+				int index = tableLayout.indexOfChild(row);
+
+				if (et.getText().length() == 0) {
+					et.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+				} else {
+					et.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(0x03, 0xDA, 0xC5)));
+				}
+			}
+		});
+
 		tableLayout.addView(row);
 		colors.add(Color.RED);
 
@@ -108,22 +130,32 @@ public class AddPlayers extends AppCompatActivity {
 		colors.remove(index);
 	}
 
+	private Player createPlayer(int index) {
+		TableRow row = (TableRow) tableLayout.getChildAt(index);
+
+		Player player = new Player(colors.get(index),
+								((EditText) row.getChildAt(1)).getText().toString(),
+								Integer.parseInt(etMoney.getText().toString()));
+		players.add(player);
+
+		return player;
+	}
+
 	/**
 	 * Create a Player instance, register his card and add him to 'players' Array.
 	 *
 	 * @param index The index of the player to ask for the card
-	 * @return		The player if created
 	 */
-	private Player askForNextCard(int index) {
-		if (index >= tableLayout.getChildCount()) return null;
+	private void askForNextCard(int index) {
+		if (index >= tableLayout.getChildCount()) {
+			startGame();
+			return;
+		}
 
-		TableRow row = (TableRow) tableLayout.getChildAt(index);
-
-		Player player = new Player(colors.get(index), ((EditText) row.getChildAt(1)).getText().toString(), 1500);
-		players.add(player);
+		currentPlayer = createPlayer(index);
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-		alertDialogBuilder.setTitle(player.getName());
+		alertDialogBuilder.setTitle(currentPlayer.getName());
 		alertDialogBuilder.setMessage("");
 		alertDialogBuilder.setCancelable(false);
 		alertDialogBuilder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
@@ -135,8 +167,6 @@ public class AddPlayers extends AppCompatActivity {
 		alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				players.clear();
-				cards.clear();
 				dialogCancelled = true;
 			}
 		});
@@ -156,21 +186,44 @@ public class AddPlayers extends AppCompatActivity {
 		alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false); // Disable 'okay' button until a new card is read
+//				((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false); // Disable 'okay' button until a new card is read
 			}
 		});
 		NFCUtilities.enableDiscovering(context);
-		currentPlayer = player;
 		alertDialog.show();
-
-		return player;
 	}
 
 	/**
 	 * Ask for all the players cards
 	 */
-	public void askForCards(View view) {
+	private void askForCards() {
 		askForNextCard(0);
+	}
+
+	private boolean playerWithNoName() {
+		for (int i = 0; i < tableLayout.getChildCount(); i++) {
+			TableRow row = (TableRow) tableLayout.getChildAt(i);
+			EditText et = (EditText) row.getChildAt(1);
+			if (et.getText().length() == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void clickStart(View view) {
+		if (tableLayout.getChildCount() < 2) {
+			Snackbar.make(view, R.string.add_players_few_players, Snackbar.LENGTH_SHORT).show();
+		} else if (playerWithNoName()) {
+			Snackbar.make(view, R.string.add_players_empty_names, Snackbar.LENGTH_SHORT).show();
+		} else {
+			players.clear();
+			cards.clear();
+			askForCards();
+		}
+	}
+
+	private void startGame() {
 	}
 
 	@Override

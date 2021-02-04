@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).show();
 			}
 		});
+		PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false);
 	}
 
 	@Override
