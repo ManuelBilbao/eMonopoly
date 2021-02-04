@@ -24,4 +24,9 @@
 	<string name="pass_go">Salida</string>
 	<string name="game_money_transfered">%1$s le dió a %2$s \$%3$d</string>
 	<string name="game_back_number">Borrar último número</string>
+	<string name="game_not_enough_money">$1%s no tiene suficiente dinero</string>
+	<string name="game_from">Origen</string>
+	<string name="game_to">Destinatario</string>
+	<string name="game_player_not_found">Jugador no encontrado</string>
+	<string name="game_same_from_to">Origen y destinatario no pueden ser el mismo</string>
 </resources>

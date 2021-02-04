@@ -135,7 +135,9 @@ public class GameActivity extends AppCompatActivity {
 									getString(R.string.game_money_transfered, fromPlayer.getName(), toPlayer.getName(), amount),
 									Toast.LENGTH_LONG).show();
 						} else {
-							Toast.makeText(context, fromPlayer.getName() + " doesn't have enough money", Toast.LENGTH_SHORT).show();
+							Toast.makeText(context,
+									getString(R.string.game_not_enough_money, fromPlayer.getName()),
+									Toast.LENGTH_SHORT).show();
 						}
 
 						fromPlayer = null;
@@ -146,10 +148,10 @@ public class GameActivity extends AppCompatActivity {
 					}
 				}
 			};
-			askCard("From", dialog -> {
+			askCard(getString(R.string.game_from), dialog -> {
 				NFCUtilities.disableDiscovering(context);
 				if (fromPlayer != null) {
-					askCard("To", toDismissListener);
+					askCard(getString(R.string.game_to), toDismissListener);
 				}
 			});
 		}
@@ -183,16 +185,16 @@ public class GameActivity extends AppCompatActivity {
 			if (fromPlayer == null) {
 				fromPlayer = getPlayer(uid);
 				if (fromPlayer == null ) {
-					Toast.makeText(this, "Jugador no encontrado", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.game_player_not_found, Toast.LENGTH_SHORT).show();
 				} else {
 					alertDialog.dismiss();
 				}
 			} else {
 				toPlayer = getPlayer(uid);
 				if (toPlayer == null) {
-					Toast.makeText(this, "Jugador no encontrado", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.game_player_not_found, Toast.LENGTH_SHORT).show();
 				} else if (toPlayer.equals(fromPlayer)) {
-					Toast.makeText(this, "From and To can't be the same", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.game_same_from_to, Toast.LENGTH_SHORT).show();
 				} else {
 					alertDialog.dismiss();
 				}

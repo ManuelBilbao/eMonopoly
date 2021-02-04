@@ -47,5 +47,10 @@
 	<string name="pass_go">Pass go</string>
 	<string name="game_money_transfered">%1$s gave %2$s \$%3$d</string>
 	<string name="game_back_number">Erase last number</string>
+	<string name="game_not_enough_money">$1%s doesn\'t have enough money</string>
+	<string name="game_from">From</string>
+	<string name="game_to">To</string>
+	<string name="game_player_not_found">Player not found</string>
+	<string name="game_same_from_to">From and To can\'t be the same</string>
 	<!-- /AddPlayers activity -->
 </resources>
