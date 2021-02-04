@@ -1,5 +1,6 @@
 package ar.net.bilbao.emonopoly;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -71,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
 		super.onBackPressed();
 	}
 
+	@SuppressLint("SetTextI18n")
 	public void numberClick(View view) {
 		String number = ((Button) view).getText().toString();
 		if (clearNext) {
@@ -82,6 +84,7 @@ public class GameActivity extends AppCompatActivity {
 		}
 	}
 
+	@SuppressLint("SetTextI18n")
 	public void operatorClick(View view) {
 		if (tvMain.getText().length() == 0) return;
 
@@ -108,6 +111,7 @@ public class GameActivity extends AppCompatActivity {
 		clearNext = false;
 	}
 
+	@SuppressLint("SetTextI18n")
 	public void resultClick(View view) {
 		if (firstOperand != null ) {
 			int result = operation.apply(firstOperand, Integer.parseInt(tvMain.getText().toString()));
@@ -217,6 +221,7 @@ public class GameActivity extends AppCompatActivity {
 				if (toPlayer == null) {
 					Toast.makeText(this, R.string.game_player_not_found, Toast.LENGTH_SHORT).show();
 				} else if (toPlayer.equals(fromPlayer)) {
+					toPlayer = null;
 					Toast.makeText(this, R.string.game_same_from_to, Toast.LENGTH_SHORT).show();
 				} else {
 					alertDialog.dismiss();

@@ -48,7 +48,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="acClick"
-				android:text="AC" />
+				android:text="AC"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
@@ -57,7 +58,8 @@
 				android:layout_marginHorizontal="6dp"
 				android:textSize="12sp"
 				android:onClick="passGoClick"
-				android:text="@string/pass_go" />
+				android:text="@string/pass_go"
+				tools:ignore="OnClick" />
 
 			<ImageButton
 				style="@style/Widget.AppCompat.Button.Colored"
@@ -67,7 +69,8 @@
 				android:layout_weight="1"
 				android:onClick="backClick"
 				android:src="?attr/actionModeCloseDrawable"
-				android:contentDescription="@string/game_back_number" />
+				android:contentDescription="@string/game_back_number"
+				tools:ignore="OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
@@ -75,7 +78,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="operatorClick"
-				android:text="/" />
+				android:text="/"
+				tools:ignore="HardcodedText,OnClick" />
 
 		</LinearLayout>
 
@@ -91,7 +95,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="7" />
+				android:text="7"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
@@ -99,7 +104,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="8" />
+				android:text="8"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
@@ -107,7 +113,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="9" />
+				android:text="9"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
@@ -115,7 +122,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="operatorClick"
-				android:text="*" />
+				android:text="*"
+				tools:ignore="HardcodedText,OnClick" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -132,7 +140,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="4" />
+				android:text="4"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				style="@style/Widget.AppCompat.Button.Borderless"
@@ -141,7 +150,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="5" />
+				android:text="5"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				style="@style/Widget.AppCompat.Button.Borderless"
@@ -150,7 +160,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="6" />
+				android:text="6"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
@@ -158,7 +169,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="operatorClick"
-				android:text="-" />
+				android:text="-"
+				tools:ignore="HardcodedText,OnClick" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -175,7 +187,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="1" />
+				android:text="1"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				style="@android:attr/buttonBarButtonStyle"
@@ -184,7 +197,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="2" />
+				android:text="2"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				style="@android:attr/buttonBarButtonStyle"
@@ -193,7 +207,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="3" />
+				android:text="3"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
@@ -201,7 +216,8 @@
 				android:layout_weight="1"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="operatorClick"
-				android:text="+" />
+				android:text="+"
+				tools:ignore="HardcodedText,OnClick" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -217,21 +233,24 @@
 				android:layout_weight="2"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="numberClick"
-				android:text="0" />
+				android:text="0"
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="resultClick"
-				android:text="=" />
+				android:text="="
+				tools:ignore="HardcodedText,OnClick" />
 
 			<Button
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_marginHorizontal="6dp"
 				android:onClick="okClick"
-				android:text="OK" />
+				android:text="OK"
+				tools:ignore="HardcodedText,OnClick" />
 		</LinearLayout>
 	</LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
