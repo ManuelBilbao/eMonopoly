@@ -36,9 +36,9 @@ public class AddPlayers extends AppCompatActivity {
 	private EditText etPassGo;
 
 	private AlertDialog alertDialog;
+	private boolean nfcEnabled = false;
 	private boolean dialogCancelled;
 	private Player currentPlayer = null;
-	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,32 @@ public class AddPlayers extends AppCompatActivity {
 		etPassGo = findViewById(R.id.add_players_et_pass_go);
 		etMoney.setText(sharedPreferences.getString("start_money", ""));
 		etPassGo.setText(sharedPreferences.getString("pass_go_money", ""));
+	}
 
-		context = this; // For NFC reading while AlertDialog is on top
+	@Override
+	protected void onResume() {
+		if (nfcEnabled)
+			setNFCDiscovering(true);
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		NFCUtilities.disableDiscovering(this);
+		super.onPause();
+	}
+
+	/**
+	 * Enable or disable NFC discovering
+	 *
+	 * @param state enable NFC discovering if true, disable if false
+	 */
+	private void setNFCDiscovering(boolean state) {
+		nfcEnabled = state;
+		if (state)
+			NFCUtilities.enableDiscovering(this);
+		else
+			NFCUtilities.disableDiscovering(this);
 	}
 
 	/**
@@ -173,7 +197,7 @@ public class AddPlayers extends AppCompatActivity {
 		alertDialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				NFCUtilities.disableDiscovering(context);
+				setNFCDiscovering(false);
 				if (dialogCancelled) {
 					dialogCancelled = false;
 					return;
@@ -189,8 +213,9 @@ public class AddPlayers extends AppCompatActivity {
 //				((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false); // Disable 'okay' button until a new card is read
 			}
 		});
-		NFCUtilities.enableDiscovering(context);
 		alertDialog.show();
+
+		setNFCDiscovering(true);
 	}
 
 	/**

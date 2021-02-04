@@ -25,6 +25,7 @@ public class GameActivity extends AppCompatActivity {
 	private ArrayList<Player> players = new ArrayList<>();
 	
 	private AlertDialog alertDialog;
+	private boolean nfcEnabled = false;
 	private Player fromPlayer;
 	private Player toPlayer;
 
@@ -49,6 +50,19 @@ public class GameActivity extends AppCompatActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		if (nfcEnabled)
+			setNFCDiscovering(true);
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		NFCUtilities.disableDiscovering(this);
+		super.onPause();
+	}
+
+	@Override
 	public void onBackPressed() {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle(R.string.exit);
@@ -70,6 +84,14 @@ public class GameActivity extends AppCompatActivity {
 
 	private void goBack() {
 		super.onBackPressed();
+	}
+
+	private void setNFCDiscovering(boolean state) {
+		nfcEnabled = state;
+		if (state)
+			NFCUtilities.enableDiscovering(this);
+		else
+			NFCUtilities.disableDiscovering(this);
 	}
 
 	@SuppressLint("SetTextI18n")
@@ -152,7 +174,7 @@ public class GameActivity extends AppCompatActivity {
 			DialogInterface.OnDismissListener toDismissListener = new DialogInterface.OnDismissListener() {
 				@Override
 				public void onDismiss(DialogInterface dialog) {
-					NFCUtilities.disableDiscovering(context);
+					setNFCDiscovering(false);
 					if (toPlayer == null) {
 						fromPlayer = null;
 					} else {
@@ -176,7 +198,7 @@ public class GameActivity extends AppCompatActivity {
 				}
 			};
 			askCard(getString(R.string.game_from), dialog -> {
-				NFCUtilities.disableDiscovering(context);
+				setNFCDiscovering(false);
 				if (fromPlayer != null) {
 					askCard(getString(R.string.game_to), toDismissListener);
 				}
@@ -185,15 +207,13 @@ public class GameActivity extends AppCompatActivity {
 	}
 
 	private void askCard(String title, DialogInterface.OnDismissListener dismissListener) {
-		Context context = this;
-		NFCUtilities.enableDiscovering(context);
-
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle(title);
 		alertDialogBuilder.setMessage("");
 		alertDialogBuilder.setOnDismissListener(dismissListener);
 		alertDialog = alertDialogBuilder.create();
 		alertDialog.show();
+		setNFCDiscovering(true);
 	}
 
 	private Player getPlayer(String uid) {
