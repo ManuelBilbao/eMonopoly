@@ -109,6 +109,8 @@ public class AddPlayers extends AppCompatActivity {
 
 	/**
 	 * Add new player to the list
+	 *
+	 * @param view View that calls the function
 	 */
 	public void addPlayer(View view) {
 		// Create a new row with 'player_row' layout
@@ -154,6 +156,12 @@ public class AddPlayers extends AppCompatActivity {
 		colors.remove(index);
 	}
 
+	/**
+	 * Create a player and add it to players list
+	 *
+	 * @param index Number of row in tableLayout
+	 * @return Created player
+	 */
 	private Player createPlayer(int index) {
 		TableRow row = (TableRow) tableLayout.getChildAt(index);
 
@@ -225,6 +233,9 @@ public class AddPlayers extends AppCompatActivity {
 		askForNextCard(0);
 	}
 
+	/**
+	 * @return true if there is at least one player without name
+	 */
 	private boolean playerWithNoName() {
 		for (int i = 0; i < tableLayout.getChildCount(); i++) {
 			TableRow row = (TableRow) tableLayout.getChildAt(i);
@@ -236,6 +247,11 @@ public class AddPlayers extends AppCompatActivity {
 		return false;
 	}
 
+	/**
+	 * Check if players meet the requirements and start asking cards
+	 *
+	 * @param view View that calls de function
+	 */
 	public void clickStart(View view) {
 		if (tableLayout.getChildCount() < 2) {
 			Snackbar.make(view, R.string.add_players_few_players, Snackbar.LENGTH_SHORT).show();
@@ -248,6 +264,9 @@ public class AddPlayers extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * When all players were registered with their cards, start the game
+	 */
 	private void startGame() {
 		Intent intent = new Intent(this, GameActivity.class);
 		intent.putExtra("passGo", Integer.parseInt(etPassGo.getText().toString()));

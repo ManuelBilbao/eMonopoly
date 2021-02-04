@@ -86,6 +86,11 @@ public class GameActivity extends AppCompatActivity {
 		super.onBackPressed();
 	}
 
+	/**
+	 * Enable or disable NFC discovering
+	 *
+	 * @param state enable NFC discovering if true, disable if false
+	 */
 	private void setNFCDiscovering(boolean state) {
 		nfcEnabled = state;
 		if (state)
@@ -94,6 +99,9 @@ public class GameActivity extends AppCompatActivity {
 			NFCUtilities.disableDiscovering(this);
 	}
 
+	/**
+	 * @param view View that calls the function
+	 */
 	@SuppressLint("SetTextI18n")
 	public void numberClick(View view) {
 		String number = ((Button) view).getText().toString();
@@ -106,6 +114,9 @@ public class GameActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * @param view View that calls the function
+	 */
 	@SuppressLint("SetTextI18n")
 	public void operatorClick(View view) {
 		if (tvMain.getText().length() == 0) return;
@@ -133,6 +144,9 @@ public class GameActivity extends AppCompatActivity {
 		clearNext = false;
 	}
 
+	/**
+	 * @param view View that calls the function
+	 */
 	@SuppressLint("SetTextI18n")
 	public void resultClick(View view) {
 		if (firstOperand != null ) {
@@ -147,6 +161,9 @@ public class GameActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * @param view View that calls the function
+	 */
 	public void passGoClick(View view) {
 		if (clearNext) {
 			clearNext = false;
@@ -155,6 +172,9 @@ public class GameActivity extends AppCompatActivity {
 		tvMain.setText(String.valueOf(passGo));
 	}
 
+	/**
+	 * @param view View that calls the function
+	 */
 	public void acClick(View view) {
 		firstOperand = null;
 		operation = null;
@@ -162,11 +182,17 @@ public class GameActivity extends AppCompatActivity {
 		tvSecondary.setText("");
 	}
 
+	/**
+	 * @param view View that calls the function
+	 */
 	public void backClick(View view) {
 		if (tvMain.getText().length() > 0)
 			tvMain.setText(tvMain.getText().subSequence(0, tvMain.length() - 1));
 	}
 
+	/**
+	 * @param view View that calls the function
+	 */
 	public void okClick(View view) {
 		if (tvMain.getText().length() > 0) {
 			int amount = Integer.parseInt(tvMain.getText().toString());
@@ -206,6 +232,12 @@ public class GameActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * Ask for a player card
+	 *
+	 * @param title Title of the dialog alert
+	 * @param dismissListener callback for the dialog dismiss
+	 */
 	private void askCard(String title, DialogInterface.OnDismissListener dismissListener) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle(title);
@@ -216,6 +248,10 @@ public class GameActivity extends AppCompatActivity {
 		setNFCDiscovering(true);
 	}
 
+	/**
+	 * @param uid A card UID
+	 * @return The player with the UID card. Null if card is not registered
+	 */
 	private Player getPlayer(String uid) {
 		for (Player player : players)
 			if (player.getCardUID().equals(uid))
