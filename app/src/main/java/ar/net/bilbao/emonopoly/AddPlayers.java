@@ -224,6 +224,13 @@ public class AddPlayers extends AppCompatActivity {
 	}
 
 	private void startGame() {
+		Intent intent = new Intent(this, GameActivity.class);
+		intent.putExtra("passGo", Integer.parseInt(etPassGo.getText().toString()));
+		intent.putExtra("playersCount", players.size());
+		for (int i = 0; i < players.size(); i++) {
+			intent.putExtra("player" + i, players.get(i));
+		}
+		startActivity(intent);
 	}
 
 	@Override

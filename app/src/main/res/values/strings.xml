@@ -16,7 +16,7 @@
 	<!-- AddPlayers activity -->
 	<string name="add_players_button_add_player">Add player</string>
 	<string name="add_players_fab_description">Start game</string>
-	<string name="add_players_alert_dialog_card_repeated">That card already belongs to %s!</string>
+	<string name="add_players_alert_dialog_card_repeated">That card already belongs to %1$s!</string>
 	<string name="add_players_default_name">Name</string>
 	<string name="add_players_remove_player">Remove player</string>
 	<string name="title_activity_settings">Settings</string>
@@ -44,5 +44,8 @@
 	<string name="add_players_pass_go">Pass Go reward</string>
 	<string name="add_players_few_players">Not enough players</string>
 	<string name="add_players_empty_names">Players must have a name</string>
+	<string name="pass_go">Pass go</string>
+	<string name="game_money_transfered">%1$s gave %2$s \$%3$d</string>
+	<string name="game_back_number">Erase last number</string>
 	<!-- /AddPlayers activity -->
 </resources>
