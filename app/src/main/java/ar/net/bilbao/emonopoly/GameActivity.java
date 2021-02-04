@@ -13,7 +13,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.function.BiFunction;
 
 public class GameActivity extends AppCompatActivity {
@@ -46,6 +45,30 @@ public class GameActivity extends AppCompatActivity {
 
 		tvMain = findViewById(R.id.game_main_tv);
 		tvSecondary = findViewById(R.id.game_secondary_tv);
+	}
+
+	@Override
+	public void onBackPressed() {
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle(R.string.exit);
+		alertDialogBuilder.setMessage(R.string.game_exit_message);
+		alertDialogBuilder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				goBack();
+			}
+		});
+		alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alertDialogBuilder.create().show();
+	}
+
+	private void goBack() {
+		super.onBackPressed();
 	}
 
 	public void numberClick(View view) {

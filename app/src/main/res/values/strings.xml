@@ -52,5 +52,7 @@
 	<string name="game_to">To</string>
 	<string name="game_player_not_found">Player not found</string>
 	<string name="game_same_from_to">From and To can\'t be the same</string>
+	<string name="exit">Exit</string>
+	<string name="game_exit_message">Are you sure you want to leave? Players data will lose</string>
 	<!-- /AddPlayers activity -->
 </resources>
