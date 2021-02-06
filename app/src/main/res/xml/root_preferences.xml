@@ -30,6 +30,12 @@
 
     <PreferenceCategory app:title="@string/sync_header">
 
+        <CheckBoxPreference
+            android:key="banker_has_card"
+            android:title="@string/settings_banker_card"
+            android:defaultValue="true"
+            app:useSimpleSummaryProvider="true" />
+
          <ListPreference
             app:defaultValue="reply"
             app:entries="@array/reply_entries"

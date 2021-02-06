@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +24,10 @@ public class GameActivity extends AppCompatActivity {
 
 	private int passGo;
 	private ArrayList<Player> players = new ArrayList<>();
-	
+	private Player banker;
+	private boolean bankerHasCard;
+	private boolean negativeBalance;
+
 	private AlertDialog alertDialog;
 	private boolean nfcEnabled = false;
 	private Player fromPlayer;
@@ -40,10 +44,12 @@ public class GameActivity extends AppCompatActivity {
 
 		Intent intent = getIntent();
 		passGo = intent.getIntExtra("passGo", 0);
+		bankerHasCard = intent.getBooleanExtra("bankerHasCard", false);
+		negativeBalance = intent.getBooleanExtra("negativeBalance", true);
 		int playersCount = intent.getIntExtra("playersCount", 0);
-		for (int i = 0; i < playersCount; i++) {
+		for (int i = 0; i < playersCount; i++)
 			players.add((Player) intent.getSerializableExtra("player" + i));
-		}
+		banker = (bankerHasCard) ? players.get(playersCount - 1) : new Player(Color.TRANSPARENT, getString(R.string.banker_name), true);
 
 		tvMain = findViewById(R.id.game_main_tv);
 		tvSecondary = findViewById(R.id.game_secondary_tv);
@@ -204,8 +210,29 @@ public class GameActivity extends AppCompatActivity {
 					if (toPlayer == null) {
 						fromPlayer = null;
 					} else {
-						if (fromPlayer.takeMoney(amount)) {
+						if (fromPlayer.takeMoney(amount, negativeBalance)) {
 							toPlayer.giveMoney(amount);
+
+							int money = fromPlayer.getMoney();
+							if (money < 0) {
+								Toast.makeText(context, getString(R.string.game_negative_balance_message, fromPlayer.getName()), Toast.LENGTH_SHORT).show();
+							} else if (money == 0) {
+								Player currentPlayer = fromPlayer;
+								AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+								alertBuilder.setTitle(R.string.game_bankrupt_alert_title);
+								alertBuilder.setMessage(getString(R.string.game_bankrupt_alert_message, fromPlayer.getName()));
+								alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										currentPlayer.setHasLost(true);
+										Toast.makeText(context, getString(R.string.game_bankrupt_message, currentPlayer.getName()), Toast.LENGTH_SHORT).show();
+										dialog.dismiss();
+									}
+								});
+								alertBuilder.setNegativeButton(R.string.no, (dialog1, which) -> dialog1.dismiss());
+								alertBuilder.create().show();
+							}
+
 							Toast.makeText(context,
 									getString(R.string.game_money_transfered, fromPlayer.getName(), toPlayer.getName(), amount),
 									Toast.LENGTH_LONG).show();
@@ -243,6 +270,18 @@ public class GameActivity extends AppCompatActivity {
 		alertDialogBuilder.setTitle(title);
 		alertDialogBuilder.setMessage("");
 		alertDialogBuilder.setOnDismissListener(dismissListener);
+		if (!bankerHasCard) {
+			alertDialogBuilder.setNeutralButton(R.string.banker_name, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (fromPlayer == null)
+						fromPlayer = banker;
+					else
+						toPlayer = banker;
+					dialog.dismiss();
+				}
+			});
+		}
 		alertDialog = alertDialogBuilder.create();
 		alertDialog.show();
 		setNFCDiscovering(true);
@@ -269,6 +308,9 @@ public class GameActivity extends AppCompatActivity {
 				fromPlayer = getPlayer(uid);
 				if (fromPlayer == null ) {
 					Toast.makeText(this, R.string.game_player_not_found, Toast.LENGTH_SHORT).show();
+				} else if (fromPlayer.hasLost()) {
+					Toast.makeText(this, getString(R.string.game_player_has_lost, fromPlayer.getName()), Toast.LENGTH_SHORT).show();
+					fromPlayer = null;
 				} else {
 					alertDialog.dismiss();
 				}
@@ -276,6 +318,9 @@ public class GameActivity extends AppCompatActivity {
 				toPlayer = getPlayer(uid);
 				if (toPlayer == null) {
 					Toast.makeText(this, R.string.game_player_not_found, Toast.LENGTH_SHORT).show();
+				} else if (toPlayer.hasLost()) {
+					Toast.makeText(this, getString(R.string.game_player_has_lost, toPlayer.getName()), Toast.LENGTH_SHORT).show();
+					toPlayer = null;
 				} else if (toPlayer.equals(fromPlayer)) {
 					toPlayer = null;
 					Toast.makeText(this, R.string.game_same_from_to, Toast.LENGTH_SHORT).show();
