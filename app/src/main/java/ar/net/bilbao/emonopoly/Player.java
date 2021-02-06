@@ -27,7 +27,7 @@ public class Player implements Serializable {
     }
 
     public Player(int color, String name, boolean isBanker) {
-        this(color, name, 0, isBanker);
+        this(color, name, Integer.MAX_VALUE, isBanker);
     }
 
     public int getIndex() {
@@ -56,9 +56,9 @@ public class Player implements Serializable {
         this.money += amount;
     }
 
-    public boolean takeMoney(int amount) {
+    public boolean takeMoney(int amount, boolean allowNegative) {
         if (this.isBanker) return true;
-        if (this.money - amount < 0) return false;
+        if (!allowNegative && this.money - amount < 0) return false;
 
         this.money -= amount;
         return true;

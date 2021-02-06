@@ -24,7 +24,7 @@
 	<string name="pass_go">Salida</string>
 	<string name="game_money_transfered">%1$s le dió a %2$s \$%3$d</string>
 	<string name="game_back_number">Borrar último número</string>
-	<string name="game_not_enough_money">$1%s no tiene suficiente dinero</string>
+	<string name="game_not_enough_money">%1$s no tiene suficiente dinero</string>
 	<string name="game_from">Origen</string>
 	<string name="game_to">Destinatario</string>
 	<string name="game_player_not_found">Jugador no encontrado</string>
@@ -32,4 +32,12 @@
 	<string name="exit">Salir</string>
 	<string name="game_exit_message">¿Está seguro que desea salir?\nLos datos de los jugadores se perderán</string>
 	<string name="settings_banker_card">El banquero tiene tarjeta</string>
+    <string name="banker_name">Banco</string>
+	<string name="game_negative_balance_message">%1$s tiene balance negativo</string>
+    <string name="game_bankrupt_alert_title">¿Bancarrota?</string>
+	<string name="game_bankrupt_alert_message">¿%1$s quedó en bancarrota?</string>
+	<string name="yes">Sí</string>
+	<string name="no">No</string>
+	<string name="game_bankrupt_message">%1$s fue declarado en bancarrota</string>
+	<string name="game_player_has_lost">%1$s perdió</string>
 </resources>

@@ -180,18 +180,52 @@ public class AddPlayers extends AppCompatActivity {
 	}
 
 	/**
-	 * Create a Player instance, register his card and add him to 'players' Array.
+	 * Create a banker player and add it to players list
+	 *
+	 * @return Created banker
+	 */
+	private Player createBanker() {
+		Player banker = new Player(Color.TRANSPARENT, getString(R.string.banker_name), true);
+		players.add(banker);
+
+		return banker;
+	}
+
+	/**
+	 * Ask for next player card
 	 *
 	 * @param index The index of the player to ask for the card
 	 */
 	private void askForNextCard(int index) {
-		if (index >= tableLayout.getChildCount()) {
+		if (index >= tableLayout.getChildCount() && !bankerHasCard) {
 			startGame();
 			return;
 		}
 
-		currentPlayer = createPlayer(index);
+		currentPlayer = (index < tableLayout.getChildCount()) ? createPlayer(index) : createBanker();
+		askForCard(new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				setNFCDiscovering(false);
+				if (dialogCancelled) {
+					dialogCancelled = false;
+					return;
+				}
+				if (currentPlayer.isBanker())
+					startGame();
+				else
+					askForNextCard(index + 1);
+			}
+		});
 
+	}
+
+	/**
+	 * Create and show the dialog for ask for the card
+	 *
+	 * @param dismissListener What to do when alert dialog dismiss
+	 */
+	private void askForCard(DialogInterface.OnDismissListener dismissListener) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle(currentPlayer.getName());
 		alertDialogBuilder.setMessage("");
@@ -208,17 +242,7 @@ public class AddPlayers extends AppCompatActivity {
 				dialogCancelled = true;
 			}
 		});
-		alertDialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				setNFCDiscovering(false);
-				if (dialogCancelled) {
-					dialogCancelled = false;
-					return;
-				}
-				askForNextCard(index + 1);
-			}
-		});
+		alertDialogBuilder.setOnDismissListener(dismissListener);
 
 		alertDialog = alertDialogBuilder.create();
 		alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -230,13 +254,6 @@ public class AddPlayers extends AppCompatActivity {
 		alertDialog.show();
 
 		setNFCDiscovering(true);
-	}
-
-	/**
-	 * Ask for all the players cards
-	 */
-	private void askForCards() {
-		askForNextCard(0);
 	}
 
 	/**
@@ -266,7 +283,7 @@ public class AddPlayers extends AppCompatActivity {
 		} else {
 			players.clear();
 			cards.clear();
-			askForCards();
+			askForNextCard(0);
 		}
 	}
 

@@ -47,7 +47,7 @@
 	<string name="pass_go">Pass go</string>
 	<string name="game_money_transfered">%1$s gave %2$s \$%3$d</string>
 	<string name="game_back_number">Erase last number</string>
-	<string name="game_not_enough_money">$1%s doesn\'t have enough money</string>
+	<string name="game_not_enough_money">%1$s doesn\'t have enough money</string>
 	<string name="game_from">From</string>
 	<string name="game_to">To</string>
 	<string name="game_player_not_found">Player not found</string>
@@ -55,5 +55,13 @@
 	<string name="exit">Exit</string>
 	<string name="game_exit_message">Are you sure you want to leave? Players data will lose</string>
 	<string name="settings_banker_card">The banker has a card</string>
+    <string name="banker_name">Bank</string>
+	<string name="game_negative_balance_message">%1$s has negative balance</string>
+	<string name="game_bankrupt_alert_title">Bankrupt?</string>
+	<string name="game_bankrupt_alert_message">Does %1$s went bankrupt?</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="game_bankrupt_message">%1$s has been declared bankrupt</string>
+	<string name="game_player_has_lost">%1$s has lost</string>
 	<!-- /AddPlayers activity -->
 </resources>
