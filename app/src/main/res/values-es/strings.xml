@@ -31,4 +31,5 @@
 	<string name="game_same_from_to">Origen y destinatario no pueden ser el mismo</string>
 	<string name="exit">Salir</string>
 	<string name="game_exit_message">¿Está seguro que desea salir?\nLos datos de los jugadores se perderán</string>
+	<string name="settings_banker_card">El banquero tiene tarjeta</string>
 </resources>

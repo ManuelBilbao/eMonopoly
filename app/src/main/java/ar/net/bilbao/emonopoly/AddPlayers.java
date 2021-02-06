@@ -40,6 +40,9 @@ public class AddPlayers extends AppCompatActivity {
 	private boolean dialogCancelled;
 	private Player currentPlayer = null;
 
+	private boolean bankerHasCard;
+	private boolean negativeBalance;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +59,9 @@ public class AddPlayers extends AppCompatActivity {
 		etPassGo = findViewById(R.id.add_players_et_pass_go);
 		etMoney.setText(sharedPreferences.getString("start_money", ""));
 		etPassGo.setText(sharedPreferences.getString("pass_go_money", ""));
+
+		bankerHasCard = sharedPreferences.getBoolean("banker_has_card", true);
+		negativeBalance = sharedPreferences.getBoolean("allow_negative", false);
 	}
 
 	@Override
@@ -274,6 +280,8 @@ public class AddPlayers extends AppCompatActivity {
 		for (int i = 0; i < players.size(); i++) {
 			intent.putExtra("player" + i, players.get(i));
 		}
+		intent.putExtra("negativeBalance", negativeBalance);
+		intent.putExtra("bankerHasCard", bankerHasCard);
 		startActivity(intent);
 	}
 

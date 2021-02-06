@@ -54,5 +54,6 @@
 	<string name="game_same_from_to">From and To can\'t be the same</string>
 	<string name="exit">Exit</string>
 	<string name="game_exit_message">Are you sure you want to leave? Players data will lose</string>
+	<string name="settings_banker_card">The banker has a card</string>
 	<!-- /AddPlayers activity -->
 </resources>

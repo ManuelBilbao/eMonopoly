@@ -23,7 +23,9 @@ public class GameActivity extends AppCompatActivity {
 
 	private int passGo;
 	private ArrayList<Player> players = new ArrayList<>();
-	
+	private boolean bankerHasCard;
+	private boolean negativeBalance;
+
 	private AlertDialog alertDialog;
 	private boolean nfcEnabled = false;
 	private Player fromPlayer;
@@ -40,6 +42,8 @@ public class GameActivity extends AppCompatActivity {
 
 		Intent intent = getIntent();
 		passGo = intent.getIntExtra("passGo", 0);
+		bankerHasCard = intent.getBooleanExtra("bankerHasCard", false);
+		negativeBalance = intent.getBooleanExtra("negativeBalance", true);
 		int playersCount = intent.getIntExtra("playersCount", 0);
 		for (int i = 0; i < playersCount; i++) {
 			players.add((Player) intent.getSerializableExtra("player" + i));
