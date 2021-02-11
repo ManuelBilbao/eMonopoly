@@ -3,6 +3,7 @@
     package="ar.net.bilbao.emonopoly">
 
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"

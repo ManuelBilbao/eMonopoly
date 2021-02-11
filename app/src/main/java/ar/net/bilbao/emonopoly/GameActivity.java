@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.nanohttpd.protocols.websockets.NanoWSD;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.BiFunction;
 
@@ -37,6 +41,8 @@ public class GameActivity extends AppCompatActivity {
 	private BiFunction<Integer, Integer, Integer> operation;
 	boolean clearNext = false;
 
+	WebSocketServer webSocketServer;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +59,13 @@ public class GameActivity extends AppCompatActivity {
 
 		tvMain = findViewById(R.id.game_main_tv);
 		tvSecondary = findViewById(R.id.game_secondary_tv);
+
+		webSocketServer = new WebSocketServer(players, bankerHasCard);
+		try {
+			webSocketServer.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -66,6 +79,13 @@ public class GameActivity extends AppCompatActivity {
 	protected void onPause() {
 		NFCUtilities.disableDiscovering(this);
 		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+//		server.stop();
+		webSocketServer.stop();
+		super.onDestroy();
 	}
 
 	@Override
@@ -225,6 +245,7 @@ public class GameActivity extends AppCompatActivity {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
 										currentPlayer.setHasLost(true);
+										webSocketServer.updatePlayers(players);
 										Toast.makeText(context, getString(R.string.game_bankrupt_message, currentPlayer.getName()), Toast.LENGTH_SHORT).show();
 										dialog.dismiss();
 									}
@@ -233,6 +254,7 @@ public class GameActivity extends AppCompatActivity {
 								alertBuilder.create().show();
 							}
 
+							webSocketServer.updatePlayers(players);
 							Toast.makeText(context,
 									getString(R.string.game_money_transfered, fromPlayer.getName(), toPlayer.getName(), amount),
 									Toast.LENGTH_LONG).show();
