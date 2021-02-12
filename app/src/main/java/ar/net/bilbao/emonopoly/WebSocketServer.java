@@ -106,10 +106,7 @@ public class WebSocketServer extends NanoWSD {
 	}
 
 	private String colorToHex(int color) {
-		int red = Color.red(color);
-		int green = Color.green(color);
-		int blue = Color.blue(color);
-		return Integer.toHexString(red) + Integer.toHexString(green) + Integer.toHexString(blue);
+		return Integer.toHexString(color).substring(2); // First 2 digits are Alpha
 	}
 
 	public void broadcast(String payload) {
