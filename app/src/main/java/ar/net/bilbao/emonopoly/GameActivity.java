@@ -1,21 +1,23 @@
 package ar.net.bilbao.emonopoly;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.nanohttpd.protocols.websockets.NanoWSD;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +44,8 @@ public class GameActivity extends AppCompatActivity {
 	boolean clearNext = false;
 
 	WebSocketServer webSocketServer;
+	int ip;
+	final int REQUEST_CODE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,13 @@ public class GameActivity extends AppCompatActivity {
 		tvMain = findViewById(R.id.game_main_tv);
 		tvSecondary = findViewById(R.id.game_secondary_tv);
 
-		webSocketServer = new WebSocketServer(players, bankerHasCard);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) == PackageManager.PERMISSION_GRANTED) {
+			ip = getIP();
+		} else {
+			requestPermissions(new String[] {Manifest.permission.ACCESS_WIFI_STATE}, REQUEST_CODE);
+		}
+
+		webSocketServer = new WebSocketServer(players, bankerHasCard, intToIPString(ip));
 		try {
 			webSocketServer.start();
 		} catch (IOException e) {
@@ -83,9 +93,17 @@ public class GameActivity extends AppCompatActivity {
 
 	@Override
 	protected void onDestroy() {
-//		server.stop();
 		webSocketServer.stop();
 		super.onDestroy();
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if (requestCode == REQUEST_CODE) {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				ip = getIP();
+			}
+		}
 	}
 
 	@Override
@@ -126,6 +144,22 @@ public class GameActivity extends AppCompatActivity {
 	}
 
 	/**
+	 * @return Local IP address
+	 */
+	private int getIP() {
+		WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+		return wm.getDhcpInfo().ipAddress;
+	}
+
+	/**
+	 * @param ip integer that represents the IP number
+	 * @return Formatted IP address string
+	 */
+	private String intToIPString(int ip) {
+		return (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "." + ((ip >> 16) & 0xFF) + "." + ((ip >> 24) & 0xFF);
+	}
+
+	/**
 	 * @param view View that calls the function
 	 */
 	@SuppressLint("SetTextI18n")
@@ -151,7 +185,7 @@ public class GameActivity extends AppCompatActivity {
 
 		switch (operator) {
 			case "+":
-				operation = Integer::sum;
+				operation = (a, b) -> a + b;
 				break;
 			case "-":
 				operation = (a, b) -> a - b;

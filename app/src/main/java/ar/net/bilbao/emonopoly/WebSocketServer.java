@@ -1,11 +1,8 @@
 package ar.net.bilbao.emonopoly;
 
-import android.graphics.Color;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nanohttpd.protocols.http.IHTTPSession;
-import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.protocols.http.response.Response;
 import org.nanohttpd.protocols.websockets.CloseCode;
 import org.nanohttpd.protocols.websockets.NanoWSD;
@@ -21,16 +18,19 @@ import java.util.TimerTask;
 
 public class WebSocketServer extends NanoWSD {
 
+	final static int PORT = 8080;
+
 	ArrayList<DebugWebSocket> conexiones = new ArrayList<>();
 
 	ArrayList<Player> players = new ArrayList<>();
 	boolean bankerHasCard;
-	String response;
+	String ip;
 
-	public WebSocketServer(ArrayList<Player> players, boolean bankerHasCard) {
-		super(8080);
-		updatePlayers(players);
+	public WebSocketServer(ArrayList<Player> players, boolean bankerHasCard, String ip) {
+		super(PORT);
 		this.bankerHasCard = bankerHasCard;
+		this.ip = ip;
+		updatePlayers(players);
 	}
 
 	@Override
@@ -61,6 +61,7 @@ public class WebSocketServer extends NanoWSD {
 		broadcast(jsonObject.toString());
 	}
 
+	@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 	private String makeResponse() {
 		StringBuilder msg = new StringBuilder("<html>" +
 				"<head>" +
@@ -78,18 +79,18 @@ public class WebSocketServer extends NanoWSD {
 				"	<div class='container'>" +
 				"		<div class='row mt-2'>");
 		for (Player player : players) {
-			msg.append("<div class='col-12 col-md-6 my-2'>");
-			msg.append("	<div class='player' id='player-").append(player.getIndex()).append("' style='background-color: #").append(colorToHex(player.getColor())).append("'>");
-			msg.append("		<h3 class='m-0'>").append(player.getName()).append("<span class='float-right'>$ ").append(NumberFormat.getNumberInstance(Locale.getDefault()).format(player.getMoney())).append("</span></h3>");
-			msg.append("	</div>");
-			msg.append("</div>");
+			msg.append("<div class='col-12 col-md-6 my-2'>" +
+						"	<div class='player' id='player-" + player.getIndex() + "' style='background-color: #" + colorToHex(player.getColor()) + "'>" +
+						"		<h3 class='m-0'>" + player.getName() + "<span class='float-right'>$ " + NumberFormat.getNumberInstance(Locale.getDefault()).format(player.getMoney()) + "</span></h3>" +
+						"	</div>" +
+						"</div>");
 		}
 
 		msg.append("</div>" +
 				"</div>" +
 				"<script>" +
 				"	var players;" +
-				"	websocket = new WebSocket('ws://192.168.0.77:8080');" +
+				"	websocket = new WebSocket('ws://" + ip + ":" + PORT + "');" +
 				"	websocket.onmessage = function(msg) {" +
 				"		players = JSON.parse(msg.data).players;" +
 				"		console.log(players);" +
