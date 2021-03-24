@@ -111,18 +111,8 @@ public class GameActivity extends AppCompatActivity {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle(R.string.exit);
 		alertDialogBuilder.setMessage(R.string.game_exit_message);
-		alertDialogBuilder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				goBack();
-			}
-		});
-		alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
+		alertDialogBuilder.setPositiveButton(R.string.exit, (dialog, which) -> goBack());
+		alertDialogBuilder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
 		alertDialogBuilder.create().show();
 	}
 
@@ -206,10 +196,13 @@ public class GameActivity extends AppCompatActivity {
 
 	/**
 	 * @param view View that calls the function
+	 * @return True if the result is valid
 	 */
 	@SuppressLint("SetTextI18n")
-	public void resultClick(View view) {
-		if (firstOperand != null ) {
+	public boolean resultClick(View view) {
+		if (firstOperand == null ) return true;
+
+		try {
 			int result = operation.apply(firstOperand, Integer.parseInt(tvMain.getText().toString()));
 
 			tvSecondary.setText(tvSecondary.getText().toString() + tvMain.getText().toString());
@@ -218,6 +211,10 @@ public class GameActivity extends AppCompatActivity {
 			firstOperand = null;
 			operation = null;
 			clearNext = true;
+			return true;
+		} catch (ArithmeticException e) {
+			Toast.makeText(this, R.string.game_zero_division, Toast.LENGTH_SHORT).show();
+			return false;
 		}
 	}
 
@@ -254,65 +251,67 @@ public class GameActivity extends AppCompatActivity {
 	 * @param view View that calls the function
 	 */
 	public void okClick(View view) {
-		if (tvMain.getText().length() > 0) {
-			int amount = Integer.parseInt(tvMain.getText().toString());
-			Context context = this;
-			DialogInterface.OnDismissListener toDismissListener = new DialogInterface.OnDismissListener() {
-				@Override
-				public void onDismiss(DialogInterface dialog) {
-					setNFCDiscovering(false);
-					if (toPlayer == null) {
-						fromPlayer = null;
-					} else {
-						if (fromPlayer.takeMoney(amount, negativeBalance)) {
-							toPlayer.giveMoney(amount);
+		if (!resultClick(view)) return;
+		if (tvMain.getText().length() <= 0) return;
 
-							int money = fromPlayer.getMoney();
-							if (money < 0) {
-								Toast.makeText(context, getString(R.string.game_negative_balance_message, fromPlayer.getName()), Toast.LENGTH_SHORT).show();
-							} else if (money == 0) {
-								Player currentPlayer = fromPlayer;
-								AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-								alertBuilder.setTitle(R.string.game_bankrupt_alert_title);
-								alertBuilder.setMessage(getString(R.string.game_bankrupt_alert_message, fromPlayer.getName()));
-								alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										currentPlayer.setHasLost(true);
-										webSocketServer.updatePlayers(players);
-										Toast.makeText(context, getString(R.string.game_bankrupt_message, currentPlayer.getName()), Toast.LENGTH_SHORT).show();
-										dialog.dismiss();
-									}
-								});
-								alertBuilder.setNegativeButton(R.string.no, (dialog1, which) -> dialog1.dismiss());
-								alertBuilder.create().show();
-							}
-
-							webSocketServer.updatePlayers(players);
-							Toast.makeText(context,
-									getString(R.string.game_money_transfered, fromPlayer.getName(), toPlayer.getName(), amount),
-									Toast.LENGTH_LONG).show();
-						} else {
-							Toast.makeText(context,
-									getString(R.string.game_not_enough_money, fromPlayer.getName()),
-									Toast.LENGTH_SHORT).show();
-						}
-
-						fromPlayer = null;
-						toPlayer = null;
-
-						tvMain.setText("");
-						tvSecondary.setText("");
-					}
-				}
-			};
-			askCard(getString(R.string.game_from), dialog -> {
+		int amount = Integer.parseInt(tvMain.getText().toString());
+		Context context = this;
+		DialogInterface.OnDismissListener toDismissListener = new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
 				setNFCDiscovering(false);
-				if (fromPlayer != null) {
-					askCard(getString(R.string.game_to), toDismissListener);
+				if (toPlayer == null) {
+					fromPlayer = null;
+					return;
 				}
-			});
-		}
+
+				if (fromPlayer.takeMoney(amount, negativeBalance)) {
+					toPlayer.giveMoney(amount);
+
+					int money = fromPlayer.getMoney();
+					if (money < 0) {
+						Toast.makeText(context, getString(R.string.game_negative_balance_message, fromPlayer.getName()), Toast.LENGTH_SHORT).show();
+					} else if (money == 0) {
+						Player currentPlayer = fromPlayer;
+						AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+						alertBuilder.setTitle(R.string.game_bankrupt_alert_title);
+						alertBuilder.setMessage(getString(R.string.game_bankrupt_alert_message, fromPlayer.getName()));
+						alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								currentPlayer.setHasLost(true);
+								webSocketServer.updatePlayers(players);
+								Toast.makeText(context, getString(R.string.game_bankrupt_message, currentPlayer.getName()), Toast.LENGTH_SHORT).show();
+								dialog.dismiss();
+							}
+						});
+						alertBuilder.setNegativeButton(R.string.no, (dialog1, which) -> dialog1.dismiss());
+						alertBuilder.create().show();
+					}
+
+					webSocketServer.updatePlayers(players);
+					Toast.makeText(context,
+							getString(R.string.game_money_transfered, fromPlayer.getName(), toPlayer.getName(), amount),
+							Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(context,
+							getString(R.string.game_not_enough_money, fromPlayer.getName()),
+							Toast.LENGTH_SHORT).show();
+				}
+
+				fromPlayer = null;
+				toPlayer = null;
+
+				tvMain.setText("");
+				tvSecondary.setText("");
+			}
+		};
+		askCard(getString(R.string.game_from), dialog -> {
+			setNFCDiscovering(false);
+			if (fromPlayer != null) {
+				askCard(getString(R.string.game_to), toDismissListener);
+			}
+		});
 	}
 
 	/**

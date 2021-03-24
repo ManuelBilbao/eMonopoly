@@ -51,7 +51,11 @@ public class WebSocketServer extends NanoWSD {
 		JSONObject jsonObject = new JSONObject();
 		for (Player player : players) {
 			try {
-				JSONObject o = new JSONObject().accumulate("index", player.getIndex()).accumulate("name", player.getName()).accumulate("money", player.getMoney()).accumulate("lost", player.hasLost());
+				JSONObject o = new JSONObject()
+						.accumulate("index", player.getIndex())
+						.accumulate("name", player.getName())
+						.accumulate("money", NumberFormat.getNumberInstance(Locale.getDefault()).format(player.getMoney()))
+						.accumulate("lost", player.hasLost());
 				jsonObject.accumulate("players", o);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -93,10 +97,8 @@ public class WebSocketServer extends NanoWSD {
 				"	websocket = new WebSocket('ws://" + ip + ":" + PORT + "');" +
 				"	websocket.onmessage = function(msg) {" +
 				"		players = JSON.parse(msg.data).players;" +
-				"		console.log(players);" +
 				"		for(i = 0; i < players.length; i++) {" +
-				"			console.log(players[i]);" +
-				"			document.getElementById('player-' + i).innerText = players[i].name + ': $' + players[i].money;" +
+				"			document.getElementById('player-' + i).children[0].innerHTML = players[i].name + '<span class=\"float-right\">$ ' + players[i].money + '</span>';" +
 				"		}" +
 				"	}" +
 				"</script>" +

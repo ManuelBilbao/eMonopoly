@@ -22,7 +22,7 @@
 	<string name="add_players_few_players">No hay suficientes jugadores</string>
 	<string name="add_players_empty_names">Los jugadores tienen que tener nombre</string>
 	<string name="pass_go">Salida</string>
-	<string name="game_money_transfered">%1$s le dió a %2$s \$%3$d</string>
+	<string name="game_money_transfered">%1$s le dio a %2$s \$%3$d</string>
 	<string name="game_back_number">Borrar último número</string>
 	<string name="game_not_enough_money">%1$s no tiene suficiente dinero</string>
 	<string name="game_from">Origen</string>
@@ -40,4 +40,5 @@
 	<string name="no">No</string>
 	<string name="game_bankrupt_message">%1$s fue declarado en bancarrota</string>
 	<string name="game_player_has_lost">%1$s perdió</string>
+	<string name="game_zero_division">No se puede dividir por cero</string>
 </resources>
