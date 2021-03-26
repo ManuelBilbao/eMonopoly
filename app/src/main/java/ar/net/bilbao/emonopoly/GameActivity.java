@@ -43,7 +43,7 @@ public class GameActivity extends AppCompatActivity {
 	private Player toPlayer;
 
 	private Integer firstOperand;
-	private BiFunction<Integer, Integer, Integer> operation;
+	private BiFunction<Long, Long, Long> operation;
 	boolean clearNext = false;
 
 	WebSocketServer webSocketServer;
@@ -228,7 +228,7 @@ public class GameActivity extends AppCompatActivity {
 				operation = (a, b) -> a * b;
 				break;
 			case "/":
-				operation = (a, b) -> a / b;
+				operation = (a, b) -> Math.round((double)a / b);
 				break;
 		}
 
@@ -238,10 +238,14 @@ public class GameActivity extends AppCompatActivity {
 			return;
 		}
 
-		firstOperand = Integer.parseInt(tvMain.getText().toString());
-		tvSecondary.setText(tvMain.getText().toString() + operator);
-		tvMain.setText("");
-		clearNext = false;
+		try {
+			firstOperand = Integer.parseInt(tvMain.getText().toString());
+			tvSecondary.setText(tvMain.getText().toString() + operator);
+			tvMain.setText("");
+			clearNext = false;
+		} catch (NumberFormatException e) {
+			Toast.makeText(this, getString(R.string.number_limits_exceeded, Integer.MIN_VALUE, Integer.MIN_VALUE), Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**
@@ -253,7 +257,7 @@ public class GameActivity extends AppCompatActivity {
 		if (firstOperand == null ) return true;
 
 		try {
-			int result = operation.apply(firstOperand, Integer.parseInt(tvMain.getText().toString()));
+			int result = getResult(firstOperand, Integer.parseInt(tvMain.getText().toString()));
 
 			tvSecondary.setText(tvSecondary.getText().toString() + tvMain.getText().toString());
 			tvMain.setText(String.valueOf(result));
@@ -264,6 +268,12 @@ public class GameActivity extends AppCompatActivity {
 			return true;
 		} catch (ArithmeticException e) {
 			Toast.makeText(this, R.string.game_zero_division, Toast.LENGTH_SHORT).show();
+			return false;
+		} catch (NumberFormatException e) {
+			Toast.makeText(this, getString(R.string.number_limits_exceeded, Integer.MIN_VALUE, Integer.MAX_VALUE), Toast.LENGTH_SHORT).show();
+			return false;
+		} catch (NotRepresentableException e) {
+			Toast.makeText(this, R.string.result_exceeded_int_limits, Toast.LENGTH_SHORT).show();
 			return false;
 		}
 	}
@@ -434,5 +444,18 @@ public class GameActivity extends AppCompatActivity {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param a First operand
+	 * @param b Second operand
+	 * @return the result of a (operator) b
+	 * @throws ArithmeticException When division by zero
+	 * @throws NotRepresentableException When result is to big (or small) for an Integer
+	 */
+	private int getResult(int a, int b) throws ArithmeticException, NotRepresentableException {
+		long result = operation.apply((long) a, (long) b);
+		if (result <= Integer.MAX_VALUE && result >= Integer.MIN_VALUE) return (int) result;
+		throw new NotRepresentableException();
 	}
 }

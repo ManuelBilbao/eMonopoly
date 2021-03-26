@@ -65,5 +65,7 @@
 	<string name="game_player_has_lost">%1$s has lost</string>
 	<string name="game_zero_division">Cannot divide by zero</string>
 	<string name="share">Share</string>
+	<string name="number_limits_exceeded">The number must be between %1$d and %2$d</string>
+	<string name="result_exceeded_int_limits">The result is too big, try with smaller numbers</string>
 	<!-- /AddPlayers activity -->
 </resources>
