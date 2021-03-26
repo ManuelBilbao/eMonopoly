@@ -41,4 +41,5 @@
 	<string name="game_bankrupt_message">%1$s fue declarado en bancarrota</string>
 	<string name="game_player_has_lost">%1$s perdió</string>
 	<string name="game_zero_division">No se puede dividir por cero</string>
+	<string name="share">Compartir</string>
 </resources>

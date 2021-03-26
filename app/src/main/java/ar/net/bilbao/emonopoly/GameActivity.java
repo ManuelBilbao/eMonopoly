@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
@@ -52,6 +55,9 @@ public class GameActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+
 		Intent intent = getIntent();
 		passGo = intent.getIntExtra("passGo", 0);
 		bankerHasCard = intent.getBooleanExtra("bankerHasCard", false);
@@ -76,6 +82,29 @@ public class GameActivity extends AppCompatActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_game, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+
+		//noinspection SimplifiableIfStatement
+		if (id == R.id.game_share_action) {
+			shareLink();
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -150,6 +179,19 @@ public class GameActivity extends AppCompatActivity {
 	}
 
 	/**
+	 * Open share dialog with server URL
+	 */
+	public void shareLink() {
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, "https://bilbao.net.ar/eMonopoly/?redirect=" + ip + ":8080");
+		sendIntent.setType("text/plain");
+
+		Intent shareIntent = Intent.createChooser(sendIntent, null);
+		startActivity(shareIntent);
+	}
+
+	/**
 	 * @param view View that calls the function
 	 */
 	@SuppressLint("SetTextI18n")
@@ -169,7 +211,9 @@ public class GameActivity extends AppCompatActivity {
 	 */
 	@SuppressLint("SetTextI18n")
 	public void operatorClick(View view) {
-		if (tvMain.getText().length() == 0) return;
+		if (tvMain.getText().length() == 0 && firstOperand == null) return;
+
+		if (tvMain.getText().length() > 0 && firstOperand != null) resultClick(view); // Accumulate results
 
 		String operator = ((Button) view).getText().toString();
 
@@ -186,6 +230,12 @@ public class GameActivity extends AppCompatActivity {
 			case "/":
 				operation = (a, b) -> a / b;
 				break;
+		}
+
+		// Change operator if no number
+		if (tvMain.getText().length() == 0)  {
+			tvSecondary.setText(firstOperand.toString() + operator);
+			return;
 		}
 
 		firstOperand = Integer.parseInt(tvMain.getText().toString());

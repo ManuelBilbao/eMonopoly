@@ -1,256 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".SecondFragment">
+	tools:context=".GameActivity">
 
-	<TextView
-		android:id="@+id/game_secondary_tv"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toTopOf="@id/game_main_tv"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
-
-	<TextView
-		android:id="@+id/game_main_tv"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="24sp"
-		app:layout_constraintBottom_toTopOf="@id/verticalLayout"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
-
-	<LinearLayout
-		android:id="@+id/verticalLayout"
+	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:gravity="fill_vertical"
-		android:paddingHorizontal="5dp"
-		android:orientation="vertical"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/game_main_tv">
+		android:theme="@style/Theme.EMonopoly.AppBarOverlay">
+
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="?attr/colorPrimary"
+			app:popupTheme="@style/Theme.EMonopoly.PopupOverlay" />
+
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+		<TextView
+			android:id="@+id/game_secondary_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintBottom_toTopOf="@id/game_main_tv"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/game_main_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="24sp"
+			app:layout_constraintBottom_toTopOf="@id/verticalLayout"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
 
 		<LinearLayout
+			android:id="@+id/verticalLayout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal">
+			android:gravity="fill_vertical"
+			android:paddingHorizontal="5dp"
+			android:orientation="vertical"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/game_main_tv">
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="acClick"
-				android:text="AC"
-				tools:ignore="HardcodedText,OnClick" />
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:textSize="12sp"
-				android:onClick="passGoClick"
-				android:text="@string/pass_go"
-				tools:ignore="OnClick" />
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="acClick"
+					android:text="AC"
+					tools:ignore="HardcodedText,OnClick" />
 
-			<ImageButton
-				style="@style/Widget.AppCompat.Button.Colored"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_marginHorizontal="6dp"
-				android:layout_weight="1"
-				android:onClick="backClick"
-				android:src="?attr/actionModeCloseDrawable"
-				android:contentDescription="@string/game_back_number"
-				tools:ignore="OnClick" />
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:textSize="12sp"
+					android:onClick="passGoClick"
+					android:text="@string/pass_go"
+					tools:ignore="OnClick" />
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="operatorClick"
-				android:text="/"
-				tools:ignore="HardcodedText,OnClick" />
+				<ImageButton
+					style="@style/Widget.AppCompat.Button.Colored"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginHorizontal="6dp"
+					android:layout_weight="1"
+					android:onClick="backClick"
+					android:src="?attr/actionModeCloseDrawable"
+					android:contentDescription="@string/game_back_number"
+					tools:ignore="OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="operatorClick"
+					android:text="/"
+					tools:ignore="HardcodedText,OnClick" />
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/horizontalLayout1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="7"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="8"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="9"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="operatorClick"
+					android:text="*"
+					tools:ignore="HardcodedText,OnClick" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/horizontalLayout2"
+				style="@style/Widget.AppCompat.ButtonBar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<Button
+					style="@style/Widget.AppCompat.Button.Borderless"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="4"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					style="@style/Widget.AppCompat.Button.Borderless"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="5"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					style="@style/Widget.AppCompat.Button.Borderless"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="6"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="operatorClick"
+					android:text="-"
+					tools:ignore="HardcodedText,OnClick" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/horizontalLayout3"
+				style="@android:attr/buttonBarStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<Button
+					style="@android:attr/buttonBarButtonStyle"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="1"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					style="@android:attr/buttonBarButtonStyle"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="2"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					style="@android:attr/buttonBarButtonStyle"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="3"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="operatorClick"
+					android:text="+"
+					tools:ignore="HardcodedText,OnClick" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/horizontalLayout4"
+				style="@android:attr/buttonBarStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<Button
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:layout_weight="2"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="numberClick"
+					android:text="0"
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="resultClick"
+					android:text="="
+					tools:ignore="HardcodedText,OnClick" />
+
+				<Button
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginHorizontal="6dp"
+					android:onClick="okClick"
+					android:text="OK"
+					tools:ignore="HardcodedText,OnClick" />
+			</LinearLayout>
 
 		</LinearLayout>
-
-		<LinearLayout
-			android:id="@+id/horizontalLayout1"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="7"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="8"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="9"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="operatorClick"
-				android:text="*"
-				tools:ignore="HardcodedText,OnClick" />
-		</LinearLayout>
-
-		<LinearLayout
-			android:id="@+id/horizontalLayout2"
-			style="@style/Widget.AppCompat.ButtonBar"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-
-			<Button
-				style="@style/Widget.AppCompat.Button.Borderless"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="4"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				style="@style/Widget.AppCompat.Button.Borderless"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="5"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				style="@style/Widget.AppCompat.Button.Borderless"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="6"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="operatorClick"
-				android:text="-"
-				tools:ignore="HardcodedText,OnClick" />
-		</LinearLayout>
-
-		<LinearLayout
-			android:id="@+id/horizontalLayout3"
-			style="@android:attr/buttonBarStyle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-
-			<Button
-				style="@android:attr/buttonBarButtonStyle"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="1"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				style="@android:attr/buttonBarButtonStyle"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="2"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				style="@android:attr/buttonBarButtonStyle"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="3"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="operatorClick"
-				android:text="+"
-				tools:ignore="HardcodedText,OnClick" />
-		</LinearLayout>
-
-		<LinearLayout
-			android:id="@+id/horizontalLayout4"
-			style="@android:attr/buttonBarStyle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-
-			<Button
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="2"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="numberClick"
-				android:text="0"
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="resultClick"
-				android:text="="
-				tools:ignore="HardcodedText,OnClick" />
-
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:layout_marginHorizontal="6dp"
-				android:onClick="okClick"
-				android:text="OK"
-				tools:ignore="HardcodedText,OnClick" />
-		</LinearLayout>
-	</LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

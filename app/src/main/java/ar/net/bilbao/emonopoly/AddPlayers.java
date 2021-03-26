@@ -121,7 +121,7 @@ public class AddPlayers extends AppCompatActivity {
 	public void addPlayer(View view) {
 		// Create a new row with 'player_row' layout
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		TableRow row = (TableRow) inflater.inflate(R.layout.player_row, null);
+		TableRow row = (TableRow) inflater.inflate(R.layout.player_add_row, null);
 		row.getChildAt(0).setBackgroundColor(Color.RED);
 
 		row.getChildAt(1).setOnFocusChangeListener(new View.OnFocusChangeListener() {

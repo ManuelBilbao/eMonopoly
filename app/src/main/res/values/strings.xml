@@ -64,5 +64,6 @@
 	<string name="game_bankrupt_message">%1$s has been declared bankrupt</string>
 	<string name="game_player_has_lost">%1$s has lost</string>
 	<string name="game_zero_division">Cannot divide by zero</string>
+	<string name="share">Share</string>
 	<!-- /AddPlayers activity -->
 </resources>
