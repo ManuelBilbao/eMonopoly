@@ -222,11 +222,17 @@ public class GameActivity extends AppCompatActivity {
 	 */
 	@SuppressLint("SetTextI18n")
 	public void operatorClick(View view) {
-		if (tvMain.getText().length() == 0 && firstOperand == null) return;
+		String operator = ((Button) view).getText().toString();
+
+		if (tvMain.getText().length() == 0 && firstOperand == null) {
+			if (operator.equals("-")) { // If they want to start with negative numbers
+				tvMain.setText("-");
+				clearNext = false;
+			}
+			return;
+		}
 
 		if (tvMain.getText().length() > 0 && firstOperand != null) resultClick(view); // Accumulate results
-
-		String operator = ((Button) view).getText().toString();
 
 		switch (operator) {
 			case "+":
@@ -245,13 +251,13 @@ public class GameActivity extends AppCompatActivity {
 
 		// Change operator if no number
 		if (tvMain.getText().length() == 0)  {
-			tvSecondary.setText(firstOperand.toString() + operator);
+			tvSecondary.setText(firstOperand.toString() + " " + operator + " ");
 			return;
 		}
 
 		try {
 			firstOperand = Integer.parseInt(tvMain.getText().toString());
-			tvSecondary.setText(tvMain.getText().toString() + operator);
+			tvSecondary.setText(tvMain.getText().toString() + " " + operator + " ");
 			tvMain.setText("");
 			clearNext = false;
 		} catch (NumberFormatException e) {
@@ -265,7 +271,8 @@ public class GameActivity extends AppCompatActivity {
 	 */
 	@SuppressLint("SetTextI18n")
 	public boolean resultClick(View view) {
-		if (firstOperand == null ) return true;
+		if (firstOperand == null && tvMain.getText().length() == 0) return false;
+		if (firstOperand == null && tvMain.getText().length() > 0) return true;
 
 		try {
 			int result = getResult(firstOperand, Integer.parseInt(tvMain.getText().toString()));
@@ -276,6 +283,7 @@ public class GameActivity extends AppCompatActivity {
 			firstOperand = null;
 			operation = null;
 			clearNext = true;
+
 			return true;
 		} catch (ArithmeticException e) {
 			Toast.makeText(this, R.string.game_zero_division, Toast.LENGTH_SHORT).show();
@@ -323,9 +331,12 @@ public class GameActivity extends AppCompatActivity {
 	 */
 	public void okClick(View view) {
 		if (!resultClick(view)) return;
-		if (tvMain.getText().length() <= 0) return;
 
 		int amount = Integer.parseInt(tvMain.getText().toString());
+		if (amount < 0) {
+			Toast.makeText(this, R.string.game_negative_transaction_error, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		Context context = this;
 		DialogInterface.OnDismissListener toDismissListener = new DialogInterface.OnDismissListener() {
 			@Override
@@ -352,6 +363,7 @@ public class GameActivity extends AppCompatActivity {
 							public void onClick(DialogInterface dialog, int which) {
 								currentPlayer.setHasLost(true);
 								webSocketServer.updatePlayers(players);
+								updateLeaderboard();
 								Toast.makeText(context, getString(R.string.game_bankrupt_message, currentPlayer.getName()), Toast.LENGTH_SHORT).show();
 								dialog.dismiss();
 							}
@@ -361,6 +373,7 @@ public class GameActivity extends AppCompatActivity {
 					}
 
 					webSocketServer.updatePlayers(players);
+					updateLeaderboard();
 					Toast.makeText(context,
 							getString(R.string.game_money_transfered, fromPlayer.getName(), toPlayer.getName(), amount),
 							Toast.LENGTH_LONG).show();
