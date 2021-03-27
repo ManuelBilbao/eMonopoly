@@ -30,6 +30,7 @@ public class AddPlayers extends AppCompatActivity {
 	private ArrayList<Integer> colors = new ArrayList<>();
 	private ArrayList<Player> players = new ArrayList<>();
 	private ArrayList<String> cards = new ArrayList<>();
+	private Player banker = null;
 
 	private TableLayout tableLayout;
 	private EditText etMoney;
@@ -185,9 +186,7 @@ public class AddPlayers extends AppCompatActivity {
 	 * @return Created banker
 	 */
 	private Player createBanker() {
-		Player banker = new Player(Color.TRANSPARENT, getString(R.string.banker_name), true);
-		players.add(banker);
-
+		banker = new Player(Color.TRANSPARENT, getString(R.string.banker_name), true);
 		return banker;
 	}
 
@@ -198,6 +197,7 @@ public class AddPlayers extends AppCompatActivity {
 	 */
 	private void askForNextCard(int index) {
 		if (index >= tableLayout.getChildCount() && !bankerHasCard) {
+			createBanker();
 			startGame();
 			return;
 		}
@@ -299,6 +299,7 @@ public class AddPlayers extends AppCompatActivity {
 		}
 		intent.putExtra("negativeBalance", negativeBalance);
 		intent.putExtra("bankerHasCard", bankerHasCard);
+		intent.putExtra("banker", banker);
 		startActivity(intent);
 	}
 

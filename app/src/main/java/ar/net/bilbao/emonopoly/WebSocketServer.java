@@ -23,12 +23,10 @@ public class WebSocketServer extends NanoWSD {
 	ArrayList<DebugWebSocket> conexiones = new ArrayList<>();
 
 	ArrayList<Player> players = new ArrayList<>();
-	boolean bankerHasCard;
 	String ip;
 
-	public WebSocketServer(ArrayList<Player> players, boolean bankerHasCard, String ip) {
+	public WebSocketServer(ArrayList<Player> players, String ip) {
 		super(PORT);
-		this.bankerHasCard = bankerHasCard;
 		this.ip = ip;
 		updatePlayers(players);
 	}
@@ -44,8 +42,6 @@ public class WebSocketServer extends NanoWSD {
 	}
 
 	protected void updatePlayers(ArrayList<Player> players) {
-		if (bankerHasCard)
-			players.remove(players.size() - 1);
 		this.players = players;
 
 		JSONObject jsonObject = new JSONObject();

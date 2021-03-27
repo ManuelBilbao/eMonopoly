@@ -65,7 +65,7 @@ public class GameActivity extends AppCompatActivity {
 		int playersCount = intent.getIntExtra("playersCount", 0);
 		for (int i = 0; i < playersCount; i++)
 			players.add((Player) intent.getSerializableExtra("player" + i));
-		banker = (bankerHasCard) ? players.get(playersCount - 1) : new Player(Color.TRANSPARENT, getString(R.string.banker_name), true);
+		banker = (Player) intent.getSerializableExtra("banker");
 
 		tvMain = findViewById(R.id.game_main_tv);
 		tvSecondary = findViewById(R.id.game_secondary_tv);
@@ -76,7 +76,7 @@ public class GameActivity extends AppCompatActivity {
 			requestPermissions(new String[] {Manifest.permission.ACCESS_WIFI_STATE}, REQUEST_CODE);
 		}
 
-		webSocketServer = new WebSocketServer(players, bankerHasCard, intToIPString(ip));
+		webSocketServer = new WebSocketServer(players, intToIPString(ip));
 		try {
 			webSocketServer.start();
 		} catch (IOException e) {
@@ -407,6 +407,8 @@ public class GameActivity extends AppCompatActivity {
 	 * @return The player with the UID card. Null if card is not registered
 	 */
 	private Player getPlayer(String uid) {
+		if (banker.getCardUID().equals(uid)) return banker;
+
 		for (Player player : players)
 			if (player.getCardUID().equals(uid))
 				return player;
