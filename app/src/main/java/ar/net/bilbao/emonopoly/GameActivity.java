@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +85,14 @@ public class GameActivity extends AppCompatActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		ImageButton btnBack = findViewById(R.id.game_btn_back);
+		btnBack.setOnLongClickListener(v -> {
+			tvMain.setText("");
+			return true;
+		});
+
+		createLeaderboard();
 	}
 
 	@Override
@@ -459,5 +470,44 @@ public class GameActivity extends AppCompatActivity {
 		long result = operation.apply((long) a, (long) b);
 		if (result <= Integer.MAX_VALUE && result >= Integer.MIN_VALUE) return (int) result;
 		throw new NotRepresentableException();
+	}
+
+	/**
+	 * Generate the leaderboard
+	 */
+	private void createLeaderboard() {
+		LinearLayout leaderboard = findViewById(R.id.leaderboard_layout);
+		for (Player player : players)
+			addPlayerToLeaderboard(player, leaderboard);
+	}
+
+	/**
+	 * Erase the leaderboard and create them again
+	 */
+	private void updateLeaderboard() {
+		LinearLayout leaderboard = findViewById(R.id.leaderboard_layout);
+		leaderboard.removeAllViews();
+		createLeaderboard();
+	}
+
+	/**
+	 * Add a player to the leaderboard layout
+	 *
+	 * @param player Player to be added
+	 * @param leaderboard Layout where player will be added
+	 */
+	private void addPlayerToLeaderboard(Player player, LinearLayout leaderboard) {
+		Drawable circle = getDrawable(R.drawable.circle);
+		circle.setTint(player.getColor());
+		circle.setBounds(0, 0, 30, 30);
+
+		TextView lbPlayer = new TextView(this);
+		lbPlayer.setText(getString(R.string.game_leaderboard_format, player.getName(), player.getLocalizedMoney()));
+		lbPlayer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+		lbPlayer.setCompoundDrawables(circle,null, null, null);
+		lbPlayer.setCompoundDrawablePadding(10);
+
+		leaderboard.addView(lbPlayer);
 	}
 }

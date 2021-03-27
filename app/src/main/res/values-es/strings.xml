@@ -44,4 +44,6 @@
 	<string name="share">Compartir</string>
 	<string name="number_limits_exceeded">El número debe estar entre %1$d y %2$d</string>
 	<string name="result_exceeded_int_limits">El resultado es demasiado grande. Intente con números más pequeños</string>
+	<string name="game_negative_transaction_error">La transacción no puede ser negativa</string>
+	<string name="game_leaderboard_format">%1$s: $ %2$s</string>
 </resources>

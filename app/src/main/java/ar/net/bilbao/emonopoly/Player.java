@@ -1,6 +1,8 @@
 package ar.net.bilbao.emonopoly;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Player implements Serializable {
     private static int lastIndex = 0;
@@ -44,6 +46,13 @@ public class Player implements Serializable {
 
     public int getMoney() {
         return money;
+    }
+
+    /**
+     * @return A string with the money of the player, formatted with user's locales
+     */
+    public String getLocalizedMoney() {
+        return NumberFormat.getNumberInstance(Locale.getDefault()).format(this.money);
     }
 
     public void setMoney(int money) {

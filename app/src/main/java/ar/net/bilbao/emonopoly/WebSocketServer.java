@@ -50,7 +50,7 @@ public class WebSocketServer extends NanoWSD {
 				JSONObject o = new JSONObject()
 						.accumulate("index", player.getIndex())
 						.accumulate("name", player.getName())
-						.accumulate("money", NumberFormat.getNumberInstance(Locale.getDefault()).format(player.getMoney()))
+						.accumulate("money", player.getLocalizedMoney())
 						.accumulate("lost", player.hasLost());
 				jsonObject.accumulate("players", o);
 			} catch (JSONException e) {
@@ -81,7 +81,7 @@ public class WebSocketServer extends NanoWSD {
 		for (Player player : players) {
 			msg.append("<div class='col-12 col-md-6 my-2'>" +
 						"	<div class='player' id='player-" + player.getIndex() + "' style='background-color: #" + colorToHex(player.getColor()) + "'>" +
-						"		<h3 class='m-0'>" + player.getName() + "<span class='float-right'>$ " + NumberFormat.getNumberInstance(Locale.getDefault()).format(player.getMoney()) + "</span></h3>" +
+						"		<h3 class='m-0'>" + player.getName() + "<span class='float-right'>$ " + player.getLocalizedMoney() + "</span></h3>" +
 						"	</div>" +
 						"</div>");
 		}
@@ -94,7 +94,7 @@ public class WebSocketServer extends NanoWSD {
 				"	websocket.onmessage = function(msg) {" +
 				"		players = JSON.parse(msg.data).players;" +
 				"		for(i = 0; i < players.length; i++) {" +
-				"			document.getElementById('player-' + i).children[0].innerHTML = players[i].name + '<span class=\"float-right\">$ ' + players[i].money + '</span>';" +
+				"			document.getElementById('player-' + players[i].index).children[0].innerHTML = players[i].name + '<span class=\"float-right\">$ ' + players[i].money + '</span>';" +
 				"		}" +
 				"	}" +
 				"</script>" +
