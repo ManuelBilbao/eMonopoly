@@ -7,21 +7,22 @@ import java.util.Locale;
 public class Player implements Serializable {
     private static int lastIndex = 0;
 
-    private int index;
+    private final int index;
     private String cardUID;
     private int color;
-    private String name;
+    private final String name;
     private int money;
     private boolean hasLost;
-    private boolean isBanker;
+    private final boolean isBanker;
 
     public Player(int color, String name, int money, boolean isBanker) {
         this.index = lastIndex++;
         this.color = color;
         this.name = name;
         this.money = money;
-        this.hasLost = false;
         this.isBanker = isBanker;
+        this.hasLost = false;
+        this.cardUID = "";
     }
 
     public Player(int color, String name, int money) {
